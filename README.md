@@ -1,5 +1,6 @@
 # Descrizione
-Files per ildeliverable 4 che comprende:
+Questa repo congtiene files per il deliverable 4 che comprende:
+
 * Diagramma API
 * Sviluppo API
 * Documentazione API
