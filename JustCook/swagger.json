@@ -1,0 +1,24 @@
+{
+    
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "JustCook",
+        "description": "Implementazione web app JustCook",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Giulio Bazzoli, Alessandra Dalla Verde, Denise Comincioli",
+            "description": "API per JustCook"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"]
+}
