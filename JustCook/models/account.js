@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-const Credenziali = require ("./models/credenziali");
-const Ricetta = require ("./models/ricetta");
+//const Credenziali = require ("./credenziali");
+//const Ricetta = require ("./ricetta");
 
 
 const AccountSchema = new mongoose.Schema({
-    credenziali: Credenziali,
+    credenziali: {type: Object, required: true},
+    //credenziali: {type: mogoose.Schema.Types.ObjectId, ref:'Credenzaili', required: true},
     imgutente: String,
-    preferiti:[Ricetta]
+    preferiti:[{type:Object}]
+    //preferiti: [{type: mogoose.Schema.Types.ObjectId, ref:'Ricetta'}],
 });
 
 const Account = mongoose.model ('Account', AccountSchema);

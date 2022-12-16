@@ -1,12 +1,15 @@
 const mongoose = require("mongoose"); //import mongoose
-const Ricetta = require('./ricetta'); //import del modello ricetta
+//const ricettaModel = require('./ricetta'); -> import del modello ricetta
+//const ingredienteModel = require ('./ingrediente); -> import del modello ingrediente
 
 const RicettaEstesaSchema = new mongoose.Schema({
 
-    ricetta : Ricetta, //associa ogni ricetta estesa a una ricetta
+    ricetta : Object, //associa ogni ricetta estesa a una ricetta
+    //ricetta: {type: mogoose.Schema.Types.ObjectId, ref: Ricetta },
     descrizione : String,
-    passaggi : Array, //array di stringhe
-    ingredienti : Array,
+    passaggi : [{type: String}],
+    ingredienti : [{type: Object}],
+    //ingredienti: [{type: mongoose.Schema.Types.ObjectId, ref: 'Ingrediente'],
     ratingDato : Number
 
 });
