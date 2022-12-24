@@ -2,12 +2,14 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
 
-//const routes = require('./routes/...') to import the routes
+const routes = require('./routes/ricetta');
+const ricetta = require('./models/ricetta');
 
 const mongoose = require('mongoose');
+const router = require('./routes/ricetta');
 app.use(express.json());
 
-//app.use('/', routes); //to use the routes
+app.use('/', routes); //to use the routes
 
 
 mongoose.connect(
@@ -23,5 +25,3 @@ mongoose.connect(
 const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('Your app is listening on port ' + listener.address().port)
 })
-
-

@@ -1,10 +1,11 @@
 const mongoose = require("mongoose"); //import mongoose
+
 //const filtroModel = require ("./filtro");
 
 const RicettaSchema = new mongoose.Schema({
 
-    nome : String,
-    autore : String,
+    nome : {type: String, required: true},
+    autore : {type: String, required: true},
     statistica : [{type: String}],
     primoCompletamento : Boolean,
     salvata : Boolean,
