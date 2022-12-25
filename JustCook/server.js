@@ -8,16 +8,17 @@ const app = express();
 
 const ingrediente = require('./routes/ingrediente');
 const ricetta = require('./routes/ricetta');
+const dispensa = require('./routes/dispensa');
 
 
 const mongoose = require('mongoose');
-const router = require('./routes/ricetta');
 app.use(express.json());
 
 //GB: qui vanno le routes
 //non so se è corretto mettere le routes qui, ma non so dove metterle
 app.use('/', ingrediente);
 app.use('/', ricetta);
+app.use('/', dispensa);
 
 
 mongoose.connect(

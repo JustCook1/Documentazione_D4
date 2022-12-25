@@ -7,10 +7,10 @@ const AccountSchema = new mongoose.Schema({
     password: {type: String, required:true},
     indirizzoEmail: {type: String, required:true},
     imgUtente: String,
-    preferiti: [{type: mogoose.Schema.Types.ObjectId, ref:Ricetta}], 
+    preferiti: [{type: mongoose.Schema.Types.ObjectId, ref:Ricetta}], 
     //dispensa: {type: mogoose.Schema.Types.ObjectId, ref:Dispensa},
-    primiCompletamenti: [{type: mogoose.Schema.Types.ObjectId, ref:Ricetta}],
-    ratingDati: [{type: Int}]
+    primiCompletamenti: [{type: mongoose.Schema.Types.ObjectId, ref:Ricetta}],
+    ratingDati: [{type: Number}]
 
 });
 
