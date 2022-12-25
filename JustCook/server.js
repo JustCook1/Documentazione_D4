@@ -2,24 +2,20 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
 
-//TODO aggiungere le routes
-//SE NON FUNZIONA PROBABILMENTE MANCANO LE ROUTE
-
-
-const ingrediente = require('./routes/ingrediente');
-const ricetta = require('./routes/ricetta');
-const dispensa = require('./routes/dispensa');
-
+const routesAccount = require('./routes/account');
+const routesRicetta = require('./routes/ricetta');
+const routesRicettaEstesa = require('./routes/ricettaEstesa');
+const routesIngrediente = require('./routes/ingrediente');
+const routesDispensa = require('./routes/dispensa');
 
 const mongoose = require('mongoose');
 app.use(express.json());
 
-//GB: qui vanno le routes
-//non so se è corretto mettere le routes qui, ma non so dove metterle
-app.use('/', ingrediente);
-app.use('/', ricetta);
-app.use('/', dispensa);
-
+app.use('/', routesAccount); 
+app.use('/', routesRicetta); 
+app.use('/', routesRicettaEstesa); 
+app.use('/', routesDispensa); 
+app.use('/', routesIngrediente); 
 
 mongoose.connect(
     process.env.MONGODB_URI,
@@ -31,6 +27,6 @@ mongoose.connect(
 );
 
 
-const listener = app.listen(process.env.PORT || 3000, () => {
+const listener = app.listen(process.env.PORT || 8080, () => {
     console.log('Your app is listening on port ' + listener.address().port)
 })

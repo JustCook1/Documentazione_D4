@@ -8,9 +8,8 @@ const AccountSchema = new mongoose.Schema({
     indirizzoEmail: {type: String, required:true},
     imgUtente: String,
     preferiti: [{type: mongoose.Schema.Types.ObjectId, ref:Ricetta}], 
-    //dispensa: {type: mogoose.Schema.Types.ObjectId, ref:Dispensa},
     primiCompletamenti: [{type: mongoose.Schema.Types.ObjectId, ref:Ricetta}],
-    ratingDati: [{type: Number}]
+    ratingDati: [{ricetta: {type: mongoose.Schema.Types.ObjectId, ref:Ricetta}, ratingDato: Number}]
 
 });
 

@@ -1,9 +1,4 @@
 const Ingrediente = require('../models/ingrediente');
-const multer = require('multer');
-const upload = multer();
-const mongoose = require("mongoose"); 
-const e = require('express');
-
 
 //aggiungi ingrediente
 const postNuovoIngrediente = (req, res) => {

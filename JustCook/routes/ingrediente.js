@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router()
-const ingrediente = require('../models/ingrediente');
 const ingredienteController = require('../controllers/ingrediente');
 const multer = require('multer');
 const upload = multer();
