@@ -1,9 +1,11 @@
 const mongoose = require("mongoose"); 
 const Ingrediente = require ('./ingrediente');
 
+//GB: i parametri di dispensa non possono essere required perchè prima va creata la dispensa, poi va popolata
 const DispensaSchema = new mongoose.Schema({
-    ingredienti: [{type:mongoose.Schema.Types.ObjectId, ref: Ingrediente, required:true}],
-    quantita: [{type: Number}]
+    ingredienti: [{type:mongoose.Schema.Types.ObjectId, ref: Ingrediente, required:false}],
+    quantita: [{type: Number, required: false}],
+    account : {type: mongoose.Schema.Types.ObjectId, ref: 'Account', required: true}
 });
 
 const Dispensa = mongoose.model('Dispensa', DispensaSchema); 

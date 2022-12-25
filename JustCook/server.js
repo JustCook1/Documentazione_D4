@@ -2,14 +2,22 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
 
-const routes = require('./routes/ricetta');
-const ricetta = require('./models/ricetta');
+//TODO aggiungere le routes
+//SE NON FUNZIONA PROBABILMENTE MANCANO LE ROUTE
+
+
+const ingrediente = require('./routes/ingrediente');
+const ricetta = require('./routes/ricetta');
+
 
 const mongoose = require('mongoose');
 const router = require('./routes/ricetta');
 app.use(express.json());
 
-app.use('/', routes); //to use the routes
+//GB: qui vanno le routes
+//non so se è corretto mettere le routes qui, ma non so dove metterle
+app.use('/', ingrediente);
+app.use('/', ricetta);
 
 
 mongoose.connect(
