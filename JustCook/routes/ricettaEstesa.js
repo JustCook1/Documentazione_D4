@@ -3,6 +3,5 @@ const router = express.Router()
 const ricettaEstesaController = require('../controllers/ricettaEstesa');
 
 
-router.get('/cercaRicette', ricettaEstesaController.cercaRicette);
-
+router.get('/cercaRicette/:cerca', ricettaEstesaController.cercaRicette);
 module.exports = router; 

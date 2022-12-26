@@ -1,4 +1,4 @@
-const Ricetta = require("../models/ricettaEstesa");
+const RicettaEstesa = require("../models/ricettaEstesa");
 
 //GET restituisce ricette con:: nome + autore + rating + statistiche
 // NOTA: bisogna ritornare solo le ricette che contengono un sottoinsieme degli ingredienti della dispensa
@@ -7,11 +7,36 @@ const Ricetta = require("../models/ricettaEstesa");
 const cercaRicette = (req, res, next) => {
     //in input prende: 2 array di stringhe (per ingredienti e filtri), stringa per nome
 
-    let ingredientiLista = req.body.ingredienti; 
-    let filtriLista = req.body.filtri;
-    let nomeRicetta = req.body.nome;
-    let ingredientiBasici = ["Sale", "Zucchero", "Acqua", "Olio"];
+    let ingredientiLista; 
+    let filtriLista;
 
+    if(req.query.ingredienti == undefined)
+        ingredientiLista = []
+    else{
+        ingredientiLista = req.query.ingredienti.split(',');
+        if(!Array.isArray(ingredientiLista))
+            ingredientiLista = [ingredientiLista]
+    }
+    
+
+    if(req.query.filtri == undefined)
+        filtriLista = []
+    else{
+        filtriLista = req.query.filtri.split(',');
+        if(!Array.isArray(filtriLista))
+            filtriLista = [filtriLista]
+    } 
+
+    let nomeRicetta = req.query.nome;
+    let ingredientiBasici = ["Sale", "Zucchero", "Acqua", "Olio"];        
+    
+    console.log("ingredienti")
+    console.log(ingredientiLista)
+    console.log("filtri")
+    console.log(filtriLista)
+    console.log("ricetta")
+    console.log(nomeRicetta)
+    
     if(ingredientiLista == null){
         // la dispensa è vuota
         console.log("Ricerca impossibile, non esiste alcun ingrediente nella dispensa")
@@ -30,36 +55,29 @@ const cercaRicette = (req, res, next) => {
             stringaPrec = ingredientiLista[i];
         }
 
-        //sistema di sicurezza ulteriore:: se nomeRicetta = "", quindi nullo lo si setta a null (lo stesso problema non esiste per filtri)
-        if(nomeRicetta == "")
-            nomeRicetta = null;
-
-        Ricetta.aggregate([
-            //1. join tra i record degli ingredienti nel db e gli ingredienti della ricetta
+        //cerca Ricetta
+        RicettaEstesa.aggregate([
             { $lookup: {from: "ingredientis", localField: "ingredienti", foreignField: "_id", as: "ingredientiInfo"}},
-            //2. join tra i record delle ricette nel db e la ricetta referenced in ricettaEstesa
+            { $match: {$expr: {$setIsSubset: ["$ingredientiInfo.nome", ingredientiLista] }} },
             { $lookup: {from: "ricettas", localField: "ricetta", foreignField: "_id", as: "ricettaInfo"}},
-            //3. match filtri e ingredienti
-            { $match: { $expr: {$setIsSubset: [filtriLista, "$ricettaInfo.filtri"]} , $expr: {$setIsSubset: ["$ingredientiInfo.nome", ingredientiLista]},
-            $expr: {$eq:["$ricettaInfo.nome", {$ifNull: [nomeRicetta, "$ricettaInfo.nome"]} ]} }},
-            //4. riassumi valori da ritornare
-            { $project: { "nome": {"$first": "$ricettaInfo.nome"}, "autore": {"$first": "$ricettaInfo.autore"},
-            "rating": {"$first": "$ricettaInfo.rating"}, "statistiche": {"$first": "$ricettaInfo.statistica"} }}
+            { $project: {nome: {$first: "$ricettaInfo.nome"}, autore: {$first: "$ricettaInfo.autore"}, statistica: {$first: "$ricettaInfo.statistica"}, 
+            filtri: {$first: "$ricettaInfo.filtri"}, rating: {$first: "$ricettaInfo.rating"}} },
+            { $match: { $expr: {$setIsSubset: [filtriLista, "$filtri"]}} },
+            { $match: { $expr: { $eq: ["$nome", {$ifNull: [nomeRicetta, "$nome"]} ]}}}
+        ]
 
-            ]
-        
         , (error, data) => {
-
             if(error){
                 console.log(error)
-                return res.json({error: "Errore: qualcosa è andato storto durante la richiesta"})                
+                return res.status(500).json({error: "Errore: qualcosa è andato storto nella ricerca"})
             }else{
-                console.log(data)
-                return res.json(data)
+                return res.status(200).json(data)
             }
-
+        
         }
-        );
+
+        )
+
     }
 };
 

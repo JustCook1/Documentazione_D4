@@ -1,21 +1,6 @@
-const dotenv = require('dotenv').config();
-const express = require('express');
-const app = express();
-
-const routesAccount = require('./routes/account');
-const routesRicetta = require('./routes/ricetta');
-const routesRicettaEstesa = require('./routes/ricettaEstesa');
-const routesIngrediente = require('./routes/ingrediente');
-const routesDispensa = require('./routes/dispensa');
+const app = require('./app');
 
 const mongoose = require('mongoose');
-app.use(express.json());
-
-app.use('/', routesAccount); 
-app.use('/', routesRicetta); 
-app.use('/', routesRicettaEstesa); 
-app.use('/', routesDispensa); 
-app.use('/', routesIngrediente); 
 
 mongoose.connect(
     process.env.MONGODB_URI,

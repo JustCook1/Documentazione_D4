@@ -10,7 +10,7 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "host": "localhost:8000",
+    "host": "localhost:8080",
     "basePath": "/",
     "tags": [
         {
@@ -20,5 +20,145 @@
     ],
     "schemes": ["http"],
     "consumes": ["application/json"],
-    "produces": ["application/json"]
+    "produces": ["application/json"],
+    "paths": {
+        "/cercaRicette/:cerca": {
+            "get": {
+                "tags": ["Ricette"],
+                "summary": "Cerca tra le ricette nel database a seconda dei parametri in input che possono essere: gli ingredienti nella dispensa, i vari filtri e/o il nome della ricetta",
+                "parameters":[
+                    {"in": "query","name": "ingredienti","description": "lista di ingredienti nella dispensa","type": "array" },
+                    {"in": "query","name": "filtri","description": "lista dei filtri selezionati","type": "array" },
+                    {"in": "query","name": "nome","description": "nome della ricetta","type": "string" }
+                ]
+
+                    
+            ,
+                "responses": {
+                    "500": {
+                        "description": "Errore: qualcosa è andato storto nella ricerca"
+                    },
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Ricette"
+
+                        }
+                    }
+                }
+            }
+        },
+        "/aggiungiAiPreferiti": {
+            "patch": {
+                "tags": ["Account"],
+                "summary": "Dato il nome e l'autore della ricetta e l'account dell'utente aggiunge il piatto passato ai preferiti",
+                "parameters":[
+                    {"in": "body","name": "ricetta","description": "nome della ricetta","type": "string" },
+                    {"in": "body","name": "autore","description": "nome dell'autore della ricetta","type": "string" },
+                    {"in": "body","name": "account","description": "username dell'account a cui aggiungere la ricetta","type": "string" }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Errore: qualcosa è andato storto nell'aggiugere la ricetta"
+                    },
+                    "404":{
+                        "description": "Errore: ricetta o account passato non trovato nel database"
+                    },
+                    "400":{
+                        "description": "Errore: ricetta già presente nei preferiti"
+                    },
+                    "200":{
+                        "description": "OK: ricetta aggiunta ai preferiti"
+                    }
+                }
+            }
+        },
+        "/togliDaiPreferiti": {
+            "patch": {
+                "tags": ["Account"],
+                "summary": "Dato il nome e l'autore della ricetta e l'account dell'utente toglie il piatto passato dai preferiti",
+                "parameters":[
+                    {"in": "body","name": "ricetta","description": "nome della ricetta","type": "string" },
+                    {"in": "body","name": "autore","description": "nome dell'autore della ricetta","type": "string" },
+                    {"in": "body","name": "account","description": "username dell'account a cui aggiungere la ricetta","type": "string" }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Errore: qualcosa è andato storto nell'eliminazione della ricetta"
+                    },
+                    "404":{
+                        "description": "Errore: ricetta da togliere non presente nel database"
+                    },
+                    "200":{
+                        "description": "OK: ricetta tolta dai preferiti"
+                    }
+                }
+            }
+        },
+        "/completaRicetta": {
+            "patch": {
+                "tags": ["Account"],
+                "summary": "Dato il nome e l'autore della ricetta e l'account dell'utente aggiunge il piatto tra i primi completati",
+                "parameters":[
+                    {"in": "body","name": "ricetta","description": "nome della ricetta","type": "string" },
+                    {"in": "body","name": "autore","description": "nome dell'autore della ricetta","type": "string" },
+                    {"in": "body","name": "account","description": "username dell'account a cui aggiungere la ricetta","type": "string" }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Errore: qualcosa è andato storto nela fase di completamento della ricetta"
+                    },
+                    "404":{
+                        "description": "Errore: ricetta da aggiungere non presente nel database"
+                    },
+                    "200":{
+                        "description": "Ok: ricetta completata"
+                    }
+                }
+            }
+        },
+        "/aggiungiRating": {
+            "patch": {
+                "tags": ["Account"],
+                "summary": "Dato il nome e l'autore della ricetta, l'account dell'utente  e il rating da aggiungere, il rating nuovo viene aggiunto",
+                "parameters":[
+                    {"in": "body","name": "ricetta","description": "nome della ricetta","type": "string" },
+                    {"in": "body","name": "autore","description": "nome dell'autore della ricetta","type": "string" },
+                    {"in": "body","name": "account","description": "username dell'account a cui aggiungere la ricetta","type": "string" },
+                    {"in": "body","name": "rating","description": "ratinge da aggiungere alla ricetta","type": "number" }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Errore: qualcosa è andato storto nela fase di completamento della ricetta"
+                    },
+                    "404":{
+                        "description": "Errore: la ricetta inserita non esiste nel database"
+                    },
+                    "400":{
+                        "description": "Errore: rating non valido o rating già registrato per questa ricetta"
+                    },
+                    "200":{
+                        "description": "Ok: nuovo rating aggiunto"
+                    }
+                }
+            }
+        }
+    },
+
+    "definitions":{
+        "Ricette": {
+            "required": [
+                "autore",
+                "nome"
+            ],
+            "properties": {
+                "nome" : {"type": "string"},
+                "autore" : {"type": "string"},
+                "statistica" : {"type": "array"},
+                "filtri" : {"type": "array"},  
+                "rating" : {"type": "number"}
+            }
+        }
+
+    }
 }

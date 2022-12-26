@@ -14,10 +14,10 @@ const aggiungiAiPreferiti = (req, res) => {
 
         if(error){
             console.log(error)
-            return res.json({error: "Errore: qualcosa è andato storto nella ricerca della ricetta"})                
+            return res.status(500).json({error: "Errore: qualcosa è andato storto nell'aggiugere la ricetta"})                
         }else{
             if(data == null){
-                return  res.json({error: "Errore: ricetta da aggiungere non presente nel database", code: 404})
+                return  res.status(404).json({error: "Errore: ricetta da aggiungere non presente nel database"})
                 
             }else{
                 let id_ricetta = mongoose.Types.ObjectId(data._id)
@@ -28,7 +28,7 @@ const aggiungiAiPreferiti = (req, res) => {
                 , (error, data) => {
                     if(error){
                         console.log(error)
-                        return res.json({error: "Errore: qualcosa è andato storto durante il matching della ricetta nei preferiti"})                
+                        return res.status(500).json({error: "Errore: qualcosa è andato storto nell'aggiugere la ricetta"})                
                     }else{
                         if(data == null){
 
@@ -37,16 +37,16 @@ const aggiungiAiPreferiti = (req, res) => {
                             , (error) => {
                                 if(error){
                                     console.log(error)
-                                    return res.json({error: "Errore: account indicato non trovato", code: 404})                
+                                    return res.status(404).json({error: "Errore: account indicato non trovato"})                
                                 }else{
-                                    return res.json({message: "Ok: ricetta aggiunta ai preferiti", code: 200})
+                                    return res.status(200).json({message: "Ok: ricetta aggiunta ai preferiti"})
                                 }
                     
                             }
                             );
 
                         }else
-                            return res.json({error: "Errore: ricetta già presente nei preferiti"})
+                            return res.status(400).json({error: "Errore: ricetta già presente nei preferiti"})
                     }
         
                 }
@@ -76,10 +76,10 @@ const completaRicetta = (req, res) => {
 
         if(error){
             console.log(error)
-            return res.json({error: "Errore: qualcosa è andato storto nella ricerca della ricetta"})                
+            return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})                
         }else{
             if(data == null)
-                return  res.json({error: "Errore: ricetta da aggiungere non presente nel database", code: 404})
+                return  res.status(404).json({error: "Errore: ricetta da aggiungere non presente nel database"})
             else{
                 //la ricetta è presente nel db
                 let id_ricetta = mongoose.Types.ObjectId(data._id)
@@ -90,7 +90,7 @@ const completaRicetta = (req, res) => {
 
                     if(error){
                         console.log(error)
-                        return res.json({error: "Errore: qualcosa è andato storto nella ricerca della ricetta tra i completati"})                
+                        return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})                
                     }else{
                         if(data == null){
                             // non è mai stata completata
@@ -101,9 +101,9 @@ const completaRicetta = (req, res) => {
                             , (error) => {
                                 if(error){
                                     console.log(error)
-                                    return res.json({error: "Errore: account indicato non trovato", code: 404})
+                                    return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})
                                 }else{
-                                    return res.json({message: "Ok: ricetta aggiunta ai preferiti", code: 200})
+                                    return res.status(200).json({message: "Ok: ricetta completata"})
                                 }
                                 
                             }
@@ -133,22 +133,21 @@ const togliDaiPreferiti = (req, res) => {
 
         if(error){
             console.log(error)
-            return res.json({error: "Errore: qualcosa è andato storto nella ricerca della ricetta"})                
+            return res.status(500).json({error: "Errore: qualcosa è andato storto nell'eliminazione della ricetta"})                
         }else{
             console.log(data)
             if(data == null){
-                return  res.json({error: "Errore: ricetta da togliere non presente nel database", code: 404})
+                return  res.status(404).json({error: "Errore: ricetta da togliere non presente nel database"})
             }else{
                 let id = mongoose.Types.ObjectId(data._id)
-                //t
                 Account.updateOne( { "username": nomeAccount}, { $pull: {"preferiti": id} }
                 , (error, dataAcc) => {
                     console.log(dataAcc)
                     if(error){
                         console.log(error)
-                        return res.json({error: "Errore: ricetta da togliere non presente tra i preferiti", code: 404})                
+                        return res.status(500).json({error: "Errore:  qualcosa è andato storto nell' eliminazione della ricetta"})                
                     }else{
-                        return res.json({message: "Ok: ricetta tolta dai preferiti", code: 200})
+                        return res.status(200).json({message: "Ok: ricetta tolta dai preferiti"})
                     }
         
                 }
@@ -167,17 +166,17 @@ const aggiungiRating = (req, res) => {
     let rating = req.body.rating;
 
     if(rating < 0 || rating > 5 || rating == undefined) 
-        return res.json({error: "Errore: rating non valido"});
+        return res.status(400).json({error: "Errore: rating non valido"});
     else{
         //controlla se la ricetta effettivamente esiste
         Ricetta.findOne({nome: nomeRicetta, autore: autoreRicetta}
             , (error, data) => {
                 if(error){
-                    return res.json({error: "Errore: qualcosa è andato storto nel matching della ricetta"})         
+                    return res.status(500).json({error: "Errore: qualcosa è andato storto nell'aggiungere il nuovo rating"})         
                 }else{
                     if(data == null){
                         //non esiste la ricetta nel db
-                        return res.json({error: "Errore: la ricetta inserita non esiste nel database", code: 404})
+                        return res.status(404).json({error: "Errore: la ricetta inserita non esiste nel database"})
 
                     }else{
                         //esiste nel db, allora guarda se l'account ha già dato un rating a questa
@@ -187,7 +186,7 @@ const aggiungiRating = (req, res) => {
                             // trova account
                         , (error, data) => {
                             if(error){
-                                return res.json({error: "Errore: qualcosa è andato storto nella ricerca del rating corrispondente"})         
+                                return res.status(500).json({error: "Errore: qualcosa è andato storto nell'aggiungere il nuovo rating"})         
                             }else{
                                 if(data == null){
                                     Account.updateOne( { "username": nomeAccount}, { $push: {"ratingDati": {ricetta: id_ricetta, ratingDato: rating} } }
@@ -195,15 +194,15 @@ const aggiungiRating = (req, res) => {
                                             console.log(dataAcc)
                                             if(error){
                                                 console.log(error)
-                                                return res.json({error: "Errore: qualcosa è andato storto nell'aggiunta del nuovo rating"})                
+                                                return res.status(500).json({error: "Errore: qualcosa è andato storto nell'aggiunta del nuovo rating"})                
                                             }else{
-                                                return res.json({message: "Ok: nuovo rating aggiunto", code: 200})
+                                                return res.status(200).json({message: "Ok: nuovo rating aggiunto"})
                                             }
                                 
                                         }
                                     );
                                 }else
-                                    return res.json({error: "Errore: rating già registrato per questa ricetta"})
+                                    return res.status(400).json({error: "Errore: rating già registrato per questa ricetta"})
                             }
                         }
                         );
