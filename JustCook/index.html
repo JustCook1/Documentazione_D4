@@ -14,8 +14,8 @@
     <span id="dispensa">
         <h2>La tua dispensa</h2>
         <p>Aggiungi ingredienti alla tua dispensa</p>
-        <input type="text" id="input">
-        <button id="Ingredienti_btn">Aggiungi</button>
+        <input type="text" id="inputDispensa">
+        <button id="Ingredienti_btn" onsubmit="return cercaIngrediente()">Aggiungi</button>
         <h3>I tuoi ingredienti</h3>
         <ul id="lista">
             <li>Ingredienti</li>
@@ -25,7 +25,7 @@
     <span id="login">
         <h2>Accedi</h2>
         <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
+        <input type="password" id="password" placeholder="Password"><br>
         <a href="cambiaPassword.html">cambia password</a>
         <button id="Accedi_btn">Accedi</button>
     </span>
