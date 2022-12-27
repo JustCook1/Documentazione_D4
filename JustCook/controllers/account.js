@@ -1,6 +1,10 @@
 const Account = require('../models/account');
 const Ricetta = require('../models/ricetta');
 const mongoose = require('mongoose');
+const express = require ('express');
+const { notify } = require('../routes/account');
+const multer = require('multer');
+const upload = multer();
 
 
 const aggiungiAiPreferiti = (req, res) => {
@@ -217,9 +221,22 @@ const aggiungiRating = (req, res) => {
     }
 };
 
+//GET indirizzo email per cambio password
+const getMail = (req, res) => {
+    let mail = req.params.indirizzoEmail;
+    if(!mail) return res.json({error:"Email non inserita", code:404});
+    Account.findOne({indirizzoEmail: mail}, (err, Account) =>{
+        if (!Account|| err) return res.json({error: "Email non valida", code: 400});
+         return res.json(Account.indirizzoEmail);
+
+    });
+  
+};
+
 module.exports = {
     aggiungiAiPreferiti,
     completaRicetta,
     togliDaiPreferiti,
-    aggiungiRating
+    aggiungiRating,
+    getMail
 };
