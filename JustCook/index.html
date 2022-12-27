@@ -15,10 +15,10 @@
         <h2>La tua dispensa</h2>
         <p>Aggiungi ingredienti alla tua dispensa</p>
         <input type="text" id="inputDispensa">
-        <button id="Ingredienti_btn" onsubmit="return cercaIngrediente()">Aggiungi</button>
+        <input type="number" id="quantita" name="quantita" min="0">
+        <button id="Ingredienti_btn" onclick = "return cercaIngrediente()" >Aggiungi</button>
         <h3>I tuoi ingredienti</h3>
-        <ul id="lista">
-            <li>Ingredienti</li>
+        <ul id="listaIngredienti">
         </ul>
     </span>
 
@@ -32,7 +32,7 @@
 
     <span id="ricerca">
         <h2>Ricerca</h2>
-        <input type="text" id="ricerca_input" placeholder="Cerca una ricetta per nome">
+        <input type="text" id="ricerca_input" placeholder="Cerca una ricetta per nome"><br>
         <button id="ricerca_btn">Cerca una ricetta</button>
         <button id="ricerca_btn2">Cerca con la tua dispensa</button>
     </span>

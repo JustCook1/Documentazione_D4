@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const app = express();
+const cors = require('cors'); //aggiunto cors per evitare problemi di accesso durante il testing
 
 //routes generiche
 
@@ -15,6 +16,9 @@ const swaggerDocument = require('./swagger.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//aggiunto cors per evitare problemi di accesso durante il testing
+//con questo comando si permette l'accesso a tutti i client
+app.use(cors());
 
 app.use('/', routesAccount); 
 app.use('/', routesRicetta); 

@@ -34,6 +34,8 @@ const getDispensa = (req, res) => {
     });
 };
 
+//crea una dispensa legata a un token di sessione
+
 
 //metodo patch per aggiungere un ingrediente alla dispensa associata all'utente avente id = idAccount
 //GB: non è detto che l'ingrediente non sia già presente nella dispensa, ma non so come gestire questo caso
