@@ -37,7 +37,7 @@ const cercaRicette = (req, res, next) => {
     console.log("ricetta")
     console.log(nomeRicetta)
     
-    if(ingredientiLista == null){
+    if(ingredientiLista.length == 0){
         // la dispensa è vuota
         console.log("Ricerca impossibile, non esiste alcun ingrediente nella dispensa")
         return res.json({message: "Warning: ricerca impossibile, non esiste alcun ingrediente nella dispensa"})

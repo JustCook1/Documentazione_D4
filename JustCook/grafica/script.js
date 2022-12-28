@@ -72,3 +72,44 @@ function login() {
 }
 
 
+//ricerca ricetta
+function cercaRicette(){
+    //funzione di ricerca
+    let risultati = document.getElementById("risultati")
+    //estrai i vari campi
+    let nomeRicetta = document.getElementById("ricerca_input").value
+    let ingredientiLista= Array.prototype.slice.call(document.getElementById("listaIngredienti").children)
+    let ingredienti = "http://localhost:8080/cercaRicette/cerca?";
+    
+    for(let i = 0; i < ingredientiLista.length; i++){
+        if(i == 0)
+            ingredienti = ingredienti.concat("ingredienti=")
+
+        ingredientiLista[i] = (ingredientiLista[i]).innerHTML
+        ingredienti = ingredienti.concat(ingredientiLista[i])
+        //aggiungi virgola
+        if(i != ingredientiLista.length -1)
+            ingredienti = ingredienti.concat(",")
+    }
+
+    //filtri da aggiungere a html
+    console.log("ricetta: " + nomeRicetta)
+    console.log(ingredientiLista)
+
+    let richiesta = new XMLHttpRequest();
+    richiesta.onload = reqListener;
+    richiesta.onerror = reqError;
+    richiesta.open('get', "http://localhost:8080/cercaRicette/cerca?ingredienti=" + ingredienti +"&nome=Tiramisù", true);
+    richiesta.send();
+
+    function reqListener() {
+        let data = JSON.parse(this.responseText);
+        console.log(data);
+    }
+    
+    function reqError(err) {
+        console.log('Fetch Error :-S', err);
+    }
+};
+
+

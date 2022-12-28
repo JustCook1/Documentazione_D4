@@ -1,8 +1,8 @@
 const Account = require('../models/account');
 const Ricetta = require('../models/ricetta');
 const mongoose = require('mongoose');
-const express = require ('express');
-const { notify } = require('../routes/account');
+//const express = require ('express'); segna come on utilizata
+//const { notify } = require('../routes/account'); segna come non utilizzata/da warning come proprietà non esistente
 const multer = require('multer');
 const upload = multer();
 

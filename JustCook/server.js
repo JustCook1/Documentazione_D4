@@ -1,6 +1,7 @@
 const app = require('./app');
 
 const mongoose = require('mongoose');
+mongoose.set("strictQuery", false); // per togliere il warning DEPRECATED
 
 mongoose.connect(
     process.env.MONGODB_URI,

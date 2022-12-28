@@ -33,12 +33,24 @@
         <h2>Benvenuto</h2>
         <p id="nomeUtente"></p>
     </span>
-
+    
     <span id="ricerca">
         <h2>Ricerca</h2>
         <input type="text" id="ricerca_input" placeholder="Cerca una ricetta per nome"><br>
-        <button id="ricerca_btn">Cerca una ricetta</button>
-        <button id="ricerca_btn2">Cerca con la tua dispensa</button>
+        <button id="ricerca_btn" onclick="cercaRicette()">Cerca una ricetta</button>
+        <div id="risultati"></div>
+        <div id ="filtri"> 
+            <div>Dieta: <button>vegana</button> <button>vegetariana</button> </div>
+            <div>Senza: <button>latte</button> <button>uova</button> <button>glutine</button> <button>frutta secca</button> </div>
+            <div>Tipo: <button>antipasto</button> <button>primo</button> <button>secondo</button> <button>dessert</button> </div>
+            <div>Ordina per:
+                <input type="radio" id="tempo" name="ordini" value="tempo" checked> <label for="tempo">tempo</label>    
+                <input type="radio" id="costo" name="ordini" value="costo" checked> <label for="costo">costo</label> 
+                <input type="radio" id="difficoltà" name="ordini" value="difficoltà" checked> <label for="difficoltà">difficoltà</label> 
+                <input type="radio" id="rating" name="ordini" value="rating" checked> <label for="rating">rating</label> 
+            </div>
+            <span><input type="range" min="0" max="1" value="50" class="slider" id="sliderAttrezzatura"> Attrezzatura speciale </span>
+            <span><button>ascendente</button></span>
     </span>
 
 </body>
