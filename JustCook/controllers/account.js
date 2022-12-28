@@ -233,10 +233,35 @@ const getMail = (req, res) => {
   
 };
 
+//PATCH cambio password
+
+const patchPassword = (req, res) => {
+
+    let mail = req.params.indirizzoEmail;
+    let password = req.params.password;
+
+    if(!password) return res.json({error: "Password nuova non inserita", code: 404});
+
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    
+    if (!strongRegex.test(password)) return res.json({error: "Nuova password non valida", code: 400});
+
+    Account.findOne({indirizzoEmail: mail}, (err, Account) =>{
+        if (err) return res.json({error: "Operazione non riuscita", code: 400});
+        Account.password = password;
+        Account.save((err, data) => {
+            if (err) return res.json({error: "Operazione non riuscita", code: 400});
+            res.json(data);
+  
+       });
+   });
+};
+
 module.exports = {
     aggiungiAiPreferiti,
     completaRicetta,
     togliDaiPreferiti,
     aggiungiRating,
-    getMail
+    getMail,
+    patchPassword
 };

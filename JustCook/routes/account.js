@@ -7,5 +7,6 @@ router.patch('/togliDaiPreferiti', accountController.togliDaiPreferiti);
 router.patch('/aggiungiRating', accountController.aggiungiRating);
 router.patch('/completaRicetta', accountController.completaRicetta);
 router.get('/account/:indirizzoEmail', accountController.getMail);
+router.patch('/account/:indirizzoEmail/:password', accountController.patchPassword);
 
 module.exports = router;
