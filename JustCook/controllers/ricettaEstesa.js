@@ -28,14 +28,7 @@ const cercaRicette = (req, res, next) => {
     } 
 
     let nomeRicetta = req.query.nome;
-    let ingredientiBasici = ["Sale", "Zucchero", "Acqua", "Olio"];        
-    
-    console.log("ingredienti")
-    console.log(ingredientiLista)
-    console.log("filtri")
-    console.log(filtriLista)
-    console.log("ricetta")
-    console.log(nomeRicetta)
+    let ingredientiBasici = ["Sale", "Zucchero", "Acqua", "Olio"];  
     
     if(ingredientiLista.length == 0){
         // la dispensa è vuota
@@ -71,6 +64,7 @@ const cercaRicette = (req, res, next) => {
                 console.log(error)
                 return res.status(500).json({error: "Errore: qualcosa è andato storto nella ricerca"})
             }else{
+                console.log(data)
                 return res.status(200).json(data)
             }
         

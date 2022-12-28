@@ -71,19 +71,26 @@ function login() {
     );
 }
 
+//funzioni per la selezione dei filtri
+function seleziona(id){
+    let bottone = document.getElementById(id)
+    if(bottone.style.backgroundColor == "green")
+        bottone.style.backgroundColor = "white"
+    else
+        bottone.style.backgroundColor = "green"
+
+}
 
 //ricerca ricetta
 function cercaRicette(){
     //funzione di ricerca
     let risultati = document.getElementById("risultati")
     //estrai i vari campi
-    let nomeRicetta = document.getElementById("ricerca_input").value
+    let nomeRicetta = "nome=" + document.getElementById("ricerca_input").value
     let ingredientiLista= Array.prototype.slice.call(document.getElementById("listaIngredienti").children)
-    let ingredienti = "http://localhost:8080/cercaRicette/cerca?";
+    let ingredienti = "ingredienti=";
     
     for(let i = 0; i < ingredientiLista.length; i++){
-        if(i == 0)
-            ingredienti = ingredienti.concat("ingredienti=")
 
         ingredientiLista[i] = (ingredientiLista[i]).innerHTML
         ingredienti = ingredienti.concat(ingredientiLista[i])
@@ -92,19 +99,84 @@ function cercaRicette(){
             ingredienti = ingredienti.concat(",")
     }
 
-    //filtri da aggiungere a html
-    console.log("ricetta: " + nomeRicetta)
-    console.log(ingredientiLista)
+    //prendi i filtri
+    let filtri = "filtri=";
+    let refFiltri =  Array.prototype.slice.call(document.getElementById("filtri").children)
 
+    for(let i = 0; i < refFiltri.length; i++){
+        let sottoFiltri =  Array.prototype.slice.call(refFiltri[i].children)
+
+        for(let j = 0; j < sottoFiltri.length; j++){
+            if(sottoFiltri[j].style.backgroundColor == "green"){ // se il bottone è selezionato
+                //controlla se appendere 'senza'
+                id = sottoFiltri[j].innerHTML
+                if(id == "uova" || id == "latte" || id == "glutine" || id == "frutta secca")
+                    id = ("senza " + id)
+                
+                if(filtri == "filtri=")
+                    filtri = filtri.concat(id)
+                else
+                    filtri = filtri.concat(","+id)
+            }
+
+        }
+
+    }
+
+    let link = "http://localhost:8080/cercaRicette/cerca?";
+    if(ingredienti != "ingredienti="){
+        link = link.concat(ingredienti)
+    
+        if(filtri != "filtri=")
+            link = link.concat("&"+filtri)
+
+        if(nomeRicetta != "nome=")
+            link = link.concat("&"+nomeRicetta)
+    }
+
+    //filtri da aggiungere a html
+    console.log(link)
     let richiesta = new XMLHttpRequest();
     richiesta.onload = reqListener;
     richiesta.onerror = reqError;
-    richiesta.open('get', "http://localhost:8080/cercaRicette/cerca?ingredienti=" + ingredienti +"&nome=Tiramisù", true);
+    richiesta.open('get', link, true);
     richiesta.send();
 
     function reqListener() {
         let data = JSON.parse(this.responseText);
-        console.log(data);
+        console.log(data)
+
+        //converti i dati ricevuti in risultati
+        for(let k = 0; k < data.length; k++){
+            let ris = document.createElement("div")
+            ris.innerHTML = data[k].nome + "\ndi " + data[k].autore
+
+            //converti statistiche
+            let rating = document.createElement("div")
+            rating.innerHTML = data[k].rating + "stelle"
+            let stats = document.createElement("div")
+            let tempo = data[k].statistica[0] + " min", costo, difficoltà
+
+            if(data[k].statistica[1] == 1)
+                costo = "basso"
+            else if(data[k].statistica[1] == 2)
+                costo == "medio"
+            else
+                costo == "alto"
+
+            if(data[k].statistica[2] == 1)
+                difficoltà = "basso"
+            else if(data[k].statistica[2] == 2)
+                difficoltà == "medio"
+            else
+                difficoltà == "alto"
+
+            stats.innerHTML =  tempo + " " + costo + " " + difficoltà
+
+            ris.appendChild(rating)
+            ris.appendChild(stats)
+            risultati.appendChild(ris)
+        }
     }
     
     function reqError(err) {

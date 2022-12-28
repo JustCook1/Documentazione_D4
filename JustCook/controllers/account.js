@@ -26,7 +26,6 @@ const aggiungiAiPreferiti = (req, res) => {
                 
             }else{
                 let id_ricetta = mongoose.Types.ObjectId(data._id)
-                console.log("ID RICETTA: " + id_ricetta)
 
                 //controlla che la ricetta non sia già tra i preferiti::
                 Account.findOne( { username: nomeAccount, preferiti: id_ricetta } 
