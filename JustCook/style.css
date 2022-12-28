@@ -39,3 +39,11 @@ body{
     text-align: left;
     border: 1px solid black;
 }
+
+#utente{
+    position: absolute;
+    width: fit-content;
+    right: 1%;
+    top: 0%;
+    text-align: center;
+}

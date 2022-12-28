@@ -46,4 +46,29 @@ function cercaIngrediente() {
 
 }
 
+//login
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const url = "http://localhost:8080/controllers/authentications";
+    fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username : username, password : password})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error || data.success == false) throw new Error(data.error);
+        console.log(data);
+        document.getElementById("login").style.display = "none";
+        document.getElementById("nomeUtente").innerHTML = username;
+        document.getElementById("utente").style.display = "block";
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert("Email o password errati");
+    }
+    );
+}
+
 

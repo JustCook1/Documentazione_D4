@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express = require('express');
 const app = express();
+//cors per non avere porblemi con le richieste
+const cors = require('cors');
 const authentication = require('./controllers/authentication');
 const tokenChecker = require('./controllers/tokenChecker');
 
@@ -15,10 +17,12 @@ const routesDispensa = require('./routes/dispensa');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
+//cors per non avere porblemi con le richieste
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/controllers/v1/authentications', authentication);
+app.use('/', authentication);
 
 app.use('/', routesAccount); 
 app.use('/', routesRicetta); 
