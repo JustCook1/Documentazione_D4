@@ -142,6 +142,49 @@
                     }
                 }
             }
+        },
+        "/account/:indirizzoEmail":{
+            "get": {
+                "tags": ["Account"],
+                "summary": "Preleva l'indirizzo email per il cambio password del login e verifica se è associato ad un account",
+                "parameters": [{"in": "body", "name": "indirizzoEmail", "description":"indirizzoEmail per cambio password","type": "string"}],
+                "responses":{
+                    "404":{
+                        "description":"Errore: email non inserita"
+                    },
+                    "400":{
+                        "description":"Errore: email non associata ad un account"
+                    },
+                    "200":{
+                        "description": "Ok: inidirizzo email prelevato",
+                        "schema": {
+                            "$ref": "#/definitions/Account/indirizzoEmail"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/:indirizzoEmail/:password":{
+            "patch":{
+                "tags": ["Account"],
+                "summary": "Preleva indirizzo email e nuova password per il cambio password del login",
+                "parameters":[
+                    {"in":"body", "name": "indirizzoEmail", "description": "indirizzoEmail per cambio password", "type": "string"},
+                    {"in":"body", "name": "password", "description": "nuova password per cambio password", "type":"string"}
+                ],
+                "responses":{
+                    "404":{
+                        "description":"Errore: password non inserita"
+                    },
+                    "400":{
+                        "description":"Errore: qualcosa è andato storto nella procedura del cambio password"
+                    },
+                    "200":{
+                        "description":"Ok: password modificata"
+
+                    }
+                }
+            }
         }
     },
 
@@ -157,6 +200,23 @@
                 "statistica" : {"type": "array"},
                 "filtri" : {"type": "array"},  
                 "rating" : {"type": "number"}
+            }
+        },
+        "Account": {
+            "required":[
+                "username",
+                "password",
+                "indirizzoEmail"
+            ],
+            "properties":{
+                "username": {"type": "string"},
+                "password": {"type": "string"},
+                "indirizzoEmail": {"type": "string"},
+                "imgUtente": {"type": "string"},
+                "preferiti": {"type": "array", "items":{ "type": ""}},
+                "primiCompletamenti": {"type":"array"},
+                "ratingDati": {"type": "array"}
+
             }
         }
 
