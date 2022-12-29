@@ -6,10 +6,10 @@ require('dotenv').config();
 
 router.post('/controllers/authentications',async function(req, res) {
     console.log("POST /authentication");
-    let user = await Account.findOne({name: req.body.username}).exec()
+    let user = await Account.findOne({username: req.body.username}).exec()
   
-    if (!user)                            return res.json({success:false,message:'Account inesistente'})
-    if (user.password!=req.body.password) return res.json({success:false,message:'Password errata'})
+    if (!user)                         return res.json({success:false,message:'Account inesistente'})
+    if (user.password!=req.body.password)  return res.json({success:false,message:'Password errata'})
 
     //GB: qui tolgo other_data e metto solo email e id visto che sennò da errore
     var payload = { email: user.indirizzoEmail, id: user._id}

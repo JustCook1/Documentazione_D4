@@ -50,6 +50,7 @@ function cercaIngrediente() {
 function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    console.log(username + " " + password)
     const url = "http://localhost:8080/controllers/authentications";
     fetch(url, {
         method: 'POST',
@@ -71,6 +72,7 @@ function login() {
     );
 }
 
+
 //funzioni per la selezione dei filtri
 function seleziona(id){
     let bottone = document.getElementById(id)
@@ -85,6 +87,12 @@ function seleziona(id){
 function cercaRicette(){
     //funzione di ricerca
     let risultati = document.getElementById("risultati")
+
+    //svuota campo risultati
+    while(risultati.children.length!= 0){
+        risultati.removeChild(risultati.lastChild)
+    }
+
     //estrai i vari campi
     let nomeRicetta = "nome=" + document.getElementById("ricerca_input").value
     let ingredientiLista= Array.prototype.slice.call(document.getElementById("listaIngredienti").children)
@@ -122,6 +130,10 @@ function cercaRicette(){
         }
 
     }
+    //aggiungi anche lo slider dell'attrezzatura
+    if(document.getElementById("sliderAttrezzatura").value == 1){
+        filtri = filtri.concat(",attrezatura speciale")
+    }
 
     let link = "http://localhost:8080/cercaRicette/cerca?";
     if(ingredienti != "ingredienti="){
@@ -135,7 +147,6 @@ function cercaRicette(){
     }
 
     //filtri da aggiungere a html
-    console.log(link)
     let richiesta = new XMLHttpRequest();
     richiesta.onload = reqListener;
     richiesta.onerror = reqError;
@@ -144,11 +155,17 @@ function cercaRicette(){
 
     function reqListener() {
         let data = JSON.parse(this.responseText);
-        console.log(data)
 
         //converti i dati ricevuti in risultati
         for(let k = 0; k < data.length; k++){
+            let link_ris = document.createElement("a")
+            link_ris.href = "ricetta.html?nome=" + data[k].nome + 
+            "&autore=" + data[k].autore +"&account=" + document.getElementById("nomeUtente").value
+            
             let ris = document.createElement("div")
+            ris.onclick = function(){
+
+            }
             ris.innerHTML = data[k].nome + "\ndi " + data[k].autore
 
             //converti statistiche
@@ -175,7 +192,9 @@ function cercaRicette(){
 
             ris.appendChild(rating)
             ris.appendChild(stats)
-            risultati.appendChild(ris)
+
+            link_ris.appendChild(ris)
+            risultati.appendChild(link_ris)
         }
     }
     

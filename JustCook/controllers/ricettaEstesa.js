@@ -50,11 +50,11 @@ const cercaRicette = (req, res, next) => {
 
         //cerca Ricetta
         RicettaEstesa.aggregate([
-            { $lookup: {from: "ingredientis", localField: "ingredienti", foreignField: "_id", as: "ingredientiInfo"}},
+            { $lookup: {from: "ingredientes", localField: "ingredienti", foreignField: "_id", as: "ingredientiInfo"}},
             { $match: {$expr: {$setIsSubset: ["$ingredientiInfo.nome", ingredientiLista] }} },
             { $lookup: {from: "ricettas", localField: "ricetta", foreignField: "_id", as: "ricettaInfo"}},
             { $project: {nome: {$first: "$ricettaInfo.nome"}, autore: {$first: "$ricettaInfo.autore"}, statistica: {$first: "$ricettaInfo.statistica"}, 
-            filtri: {$first: "$ricettaInfo.filtri"}, rating: {$first: "$ricettaInfo.rating"}} },
+            filtri: {$first: "$ricettaInfo.filtri"}, rating:{$first: "$ricettaInfo.rating"} }},
             { $match: { $expr: {$setIsSubset: [filtriLista, "$filtri"]}} },
             { $match: { $expr: { $eq: ["$nome", {$ifNull: [nomeRicetta, "$nome"]} ]}}}
         ]
@@ -76,6 +76,37 @@ const cercaRicette = (req, res, next) => {
 };
 
 
+const trovaInfoRicette = (req, res, next) => {
+    //in input prende: 2 array di stringhe (per ingredienti e filtri), stringa per nome
+
+    let nomeR = req.query.nome, autoreR=req.query.autore
+    console.log(nomeR + " " + autoreR)
+    
+    RicettaEstesa.aggregate([
+            { $lookup: {from: "ingredientes", localField: "ingredienti", foreignField: "_id", as: "ingredientiInfo"}},
+            { $lookup: {from: "ricettas", localField: "ricetta", foreignField: "_id", as: "ricettaInfo"}},
+            { $project: {nome: {$first: "$ricettaInfo.nome"}, autore: {$first: "$ricettaInfo.autore"}, statistica: {$first: "$ricettaInfo.statistica"}, 
+            filtri: {$first: "$ricettaInfo.filtri"}, passaggi: "$passaggi", descrizione: "$descrizione", rating:{$first: "$ricettaInfo.rating"},
+            ingredienti: "$ingredientiInfo", quantità: "$quantità" }},
+            { $match: { nome:nomeR, autore: autoreR }}
+        ]
+
+        , (error, data) => {
+            if(error){
+                console.log(error)
+                return res.status(500).json({error: "Errore: qualcosa è andato storto nella ricerca"})
+            }else{
+                console.log(data)
+                return res.status(200).json(data)
+            }
+        
+        }
+
+    );
+
+};
+
 module.exports = {
-    cercaRicette
+    cercaRicette,
+    trovaInfoRicette
 };
