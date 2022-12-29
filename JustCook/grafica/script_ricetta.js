@@ -1,25 +1,26 @@
-let account, ricetta, autore
+let accountAtt, ricettaAtt, autoreAtt
 
 const comp = function completa(){    
-    let richiesta = new XMLHttpRequest();
-    richiesta.onload = reqListener;
-    richiesta.onerror = reqError;
-    richiesta.open('patch', link, true);
-    let body = {
-        "ricetta": ricetta,
-        "autore": autore,
-        "account": account
-    };
-    richiesta.send(body);
-    
-    function reqListener() {
-        let data = JSON.parse(this.responseText);
-        //gestisci messaggi
+    let link = "http://localhost:8080/completaRicetta"
+    fetch(link, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            ricetta: ricettaAtt,
+            autore: autoreAtt,
+            account: accountAtt}
+        )
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error) throw new Error(data.error);
+        alert("Ok: ricetta completata")
+    })
+    .catch((error) => {
+        let string = "" + error
+        alert(string.split("Error:")[1]);
     }
-    
-    function reqError(err) {
-        console.log('Fetch Error :-S', err);
-    }
+    );
             
 
 }
@@ -29,46 +30,51 @@ const gestisciPreferiti = function preferiti(){
 
     if(bottone.innerHTML == "aggiungi ai preferiti"){
         let link = "http://localhost:8080/aggiungiAiPreferiti"
-        let richiesta = new XMLHttpRequest();
-        richiesta.onload = reqListener;
-        richiesta.onerror = reqError;
-        richiesta.open('patch', link, true);
-        let body = {
-            "ricetta": ricetta,
-            "autore": autore,
-            "account": account
-        };
-        richiesta.send(body);
-        
-        function reqListener() {
-            let data = JSON.parse(this.responseText);
+        fetch(link, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                ricetta: ricettaAtt,
+                autore: autoreAtt,
+                account: accountAtt}
+            )
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) throw new Error(data.error);
+            alert("Ok: ricetta aggiunta ai preferiti");
+            
+        })
+        .catch((error) => {
+            let string = "" + error
+            alert(string.split("Error:")[1]);
         }
+        );
         
-        function reqError(err) {
-            console.log('Fetch Error :-S', err);
-        }
-        
-        bottone.innerHTML == "togli dai preferiti"
+        bottone.innerHTML = "togli dai preferiti"
     }else{
         let link = "http://localhost:8080/togliDaiPreferiti"
-        let richiesta = new XMLHttpRequest();
-        richiesta.onload = reqListener;
-        richiesta.onerror = reqError;
-        richiesta.open('patch', link, true);
-        let body = {
-            "ricetta": ricetta,
-            "autore": autore,
-            "account": account
-        };
-        richiesta.send(body);
-        
-        function reqListener() {
-            let data = JSON.parse(this.responseText);
+            
+        fetch(link, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                ricetta: ricettaAtt,
+                autore: autoreAtt,
+                account: accountAtt}
+            )
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) throw new Error(data.error);
+            alert("Ok: ricetta tolta dai preferiti");
+            
+        })
+        .catch((error) => {
+            let string = "" + error
+            alert(string.split("Error:")[1]);
         }
-        
-        function reqError(err) {
-            console.log('Fetch Error :-S', err);
-        }
+        );
         bottone.innerHTML = "aggiungi ai preferiti"
     }
             
@@ -78,9 +84,8 @@ const gestisciPreferiti = function preferiti(){
 
 function riempiCampi() {
     let url = document.location.href
-    if(url.split("?")[1] != null){
         let params = url.split("?")[1]
-        account = params.split("account=")[1]
+        accountAtt = params.split("account=")[1]
 
         //parametri si trovano nella forma: nome=Tirmisù, passaggi = 
         let richiesta = new XMLHttpRequest();
@@ -91,7 +96,7 @@ function riempiCampi() {
         function reqListener() {
             let data = JSON.parse(this.responseText);
             data = data[0]
-            ricetta = data.nome, autore = data.autore
+            ricettaAtt = data.nome, autoreAtt = data.autore
 
             let titoloEl = document.getElementById('titolo')
             titoloEl.innerHTML = decodeURI(data.nome) + " di " + data.autore;
@@ -100,7 +105,7 @@ function riempiCampi() {
             let completa = document.createElement("button")
             completa.innerHTML = "completa"
             completa.onclick = comp
-            if(account == "undefined")
+            if(accountAtt == "undefined")
                 completa.disabled = true
             completa.id = "completa"
             titoloEl.appendChild(completa)
@@ -109,12 +114,20 @@ function riempiCampi() {
             let pref = document.createElement("button")
             pref.innerHTML = "aggiungi ai preferiti"
             pref.onclick = gestisciPreferiti
-            if(account == "undefined")
+            if(accountAtt == "undefined")
                 pref.disabled = true
             pref.id = "pref"
             titoloEl.appendChild(pref)
 
-            document.getElementById("rating").innerHTML = "rating: " + data.rating + " stelle"    
+            //rating
+
+            for(let i = 0; i < 5; i++){
+                let img = document.createElement("IMG")
+                console.log(url.split("ricetta")[0] + "img/star_yellow_transp.png")
+                img.src = "file:///home/ghost/Documenti/uni/PROJECT/Documentazione_D4/JustCook/grafica/img/star_yellow_transp.png"
+                img.alt= "star "
+                document.getElementById("rating").appendChild(img)
+            }  
 
             let costo, diff
             if(data.statistica[1] == 1)
@@ -155,5 +168,5 @@ function riempiCampi() {
 
     
         //nascondi parametri*/
-    }
+    
 }

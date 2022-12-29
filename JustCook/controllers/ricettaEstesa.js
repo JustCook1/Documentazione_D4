@@ -80,7 +80,6 @@ const trovaInfoRicette = (req, res, next) => {
     //in input prende: 2 array di stringhe (per ingredienti e filtri), stringa per nome
 
     let nomeR = req.query.nome, autoreR=req.query.autore
-    console.log(nomeR + " " + autoreR)
     
     RicettaEstesa.aggregate([
             { $lookup: {from: "ingredientes", localField: "ingredienti", foreignField: "_id", as: "ingredientiInfo"}},
@@ -96,7 +95,6 @@ const trovaInfoRicette = (req, res, next) => {
                 console.log(error)
                 return res.status(500).json({error: "Errore: qualcosa è andato storto nella ricerca"})
             }else{
-                console.log(data)
                 return res.status(200).json(data)
             }
         

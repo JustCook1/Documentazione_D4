@@ -13,12 +13,14 @@ const routesRicetta = require('./routes/ricetta');
 const routesRicettaEstesa = require('./routes/ricettaEstesa');
 const routesIngrediente = require('./routes/ingrediente');
 const routesDispensa = require('./routes/dispensa');
+
 //swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 //cors per non avere porblemi con le richieste
 app.use(cors());
+  
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

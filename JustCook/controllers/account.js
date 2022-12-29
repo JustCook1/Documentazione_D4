@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 //const express = require ('express'); segna come on utilizata
 //const { notify } = require('../routes/account'); segna come non utilizzata/da warning come proprietà non esistente
 const multer = require('multer');
-const upload = multer();
 
 
 const aggiungiAiPreferiti = (req, res) => {
@@ -107,6 +106,7 @@ const completaRicetta = (req, res) => {
                                     console.log(error)
                                     return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})
                                 }else{
+                                    console.log(res)
                                     return res.status(200).json({message: "Ok: ricetta completata"})
                                 }
                                 

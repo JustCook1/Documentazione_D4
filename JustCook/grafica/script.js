@@ -1,5 +1,5 @@
 
-
+let account
 //1: controlla se l'utente è loggato
 //2: se l'utente è loggato controlla se ha una dispensa
 //3: se l'utente ha una dispensa carica gli ingredienti
@@ -50,7 +50,6 @@ function cercaIngrediente() {
 function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    console.log(username + " " + password)
     const url = "http://localhost:8080/controllers/authentications";
     fetch(url, {
         method: 'POST',
@@ -63,6 +62,7 @@ function login() {
         console.log(data);
         document.getElementById("login").style.display = "none";
         document.getElementById("nomeUtente").innerHTML = username;
+        account = username
         document.getElementById("utente").style.display = "block";
     })
     .catch((error) => {
@@ -159,8 +159,12 @@ function cercaRicette(){
         //converti i dati ricevuti in risultati
         for(let k = 0; k < data.length; k++){
             let link_ris = document.createElement("a")
-            link_ris.href = "ricetta.html?nome=" + data[k].nome + 
-            "&autore=" + data[k].autore +"&account=" + document.getElementById("nomeUtente").value
+            link_ris.href = "#"
+            link_ris.onclick = function(){
+                link_ris.href = "ricetta.html?nome=" + data[k].nome + 
+                "&autore=" + data[k].autore +"&account=" + account
+                console.log(document.getElementById("nomeUtente").innerHTML)
+            }
             
             let ris = document.createElement("div")
             ris.innerHTML = data[k].nome + "\ndi " + data[k].autore
