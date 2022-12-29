@@ -27,8 +27,8 @@
                 "tags": ["Ricette"],
                 "summary": "Cerca tra le ricette nel database a seconda dei parametri in input che possono essere: gli ingredienti nella dispensa, i vari filtri e/o il nome della ricetta",
                 "parameters":[
-                    {"in": "query","name": "ingredienti","description": "lista di ingredienti nella dispensa","type": "array" },
-                    {"in": "query","name": "filtri","description": "lista dei filtri selezionati","type": "array" },
+                    {"in": "query","name": "ingredienti","description": "lista di ingredienti nella dispensa","type": "array", "items":{"type": "string"} },
+                    {"in": "query","name": "filtri","description": "lista dei filtri selezionati","type": "array", "items":{"type": "string"} },
                     {"in": "query","name": "nome","description": "nome della ricetta","type": "string" }
                 ]
 
@@ -197,8 +197,8 @@
             "properties": {
                 "nome" : {"type": "string"},
                 "autore" : {"type": "string"},
-                "statistica" : {"type": "array"},
-                "filtri" : {"type": "array"},  
+                "statistica" : {"type": "array", "items": {"type": "integer"}},
+                "filtri" : {"type": "array", "items": {"type": "string"}},  
                 "rating" : {"type": "number"}
             }
         },
@@ -213,9 +213,14 @@
                 "password": {"type": "string"},
                 "indirizzoEmail": {"type": "string"},
                 "imgUtente": {"type": "string"},
-                "preferiti": {"type": "array", "items":{ "type": ""}},
-                "primiCompletamenti": {"type":"array"},
-                "ratingDati": {"type": "array"}
+                "preferiti": {"type": "array", "items":{"$ref": "#/definitions/Ricette"}},
+                "primiCompletamenti": {"type":"array", "items":{"$ref": "#/definitions/Ricette"}},
+                "ratingDati": {"type": "array", "items": {
+                "type":"object",
+                "properties": {
+                    "ricetta": {"$ref": "#/definitions/Ricette"},
+                    "ratingDato": {"type": "integer" }
+                }}}
 
             }
         }

@@ -1,8 +1,6 @@
 let account, ricetta, autore
 
-const comp = function completa(){
-    let bottone = document.getElementById("completa")
-    
+const comp = function completa(){    
     let richiesta = new XMLHttpRequest();
     richiesta.onload = reqListener;
     richiesta.onerror = reqError;
@@ -21,6 +19,57 @@ const comp = function completa(){
     
     function reqError(err) {
         console.log('Fetch Error :-S', err);
+    }
+            
+
+}
+
+const gestisciPreferiti = function preferiti(){
+    let bottone = document.getElementById("pref")
+
+    if(bottone.innerHTML == "aggiungi ai preferiti"){
+        let link = "http://localhost:8080/aggiungiAiPreferiti"
+        let richiesta = new XMLHttpRequest();
+        richiesta.onload = reqListener;
+        richiesta.onerror = reqError;
+        richiesta.open('patch', link, true);
+        let body = {
+            "ricetta": ricetta,
+            "autore": autore,
+            "account": account
+        };
+        richiesta.send(body);
+        
+        function reqListener() {
+            let data = JSON.parse(this.responseText);
+        }
+        
+        function reqError(err) {
+            console.log('Fetch Error :-S', err);
+        }
+        
+        bottone.innerHTML == "togli dai preferiti"
+    }else{
+        let link = "http://localhost:8080/togliDaiPreferiti"
+        let richiesta = new XMLHttpRequest();
+        richiesta.onload = reqListener;
+        richiesta.onerror = reqError;
+        richiesta.open('patch', link, true);
+        let body = {
+            "ricetta": ricetta,
+            "autore": autore,
+            "account": account
+        };
+        richiesta.send(body);
+        
+        function reqListener() {
+            let data = JSON.parse(this.responseText);
+        }
+        
+        function reqError(err) {
+            console.log('Fetch Error :-S', err);
+        }
+        bottone.innerHTML = "aggiungi ai preferiti"
     }
             
 
@@ -46,6 +95,8 @@ function riempiCampi() {
 
             let titoloEl = document.getElementById('titolo')
             titoloEl.innerHTML = decodeURI(data.nome) + " di " + data.autore;
+
+            //bottone completa
             let completa = document.createElement("button")
             completa.innerHTML = "completa"
             completa.onclick = comp
@@ -54,8 +105,17 @@ function riempiCampi() {
             completa.id = "completa"
             titoloEl.appendChild(completa)
 
+            //bottone 
+            let pref = document.createElement("button")
+            pref.innerHTML = "aggiungi ai preferiti"
+            pref.onclick = gestisciPreferiti
+            if(account == "undefined")
+                pref.disabled = true
+            pref.id = "pref"
+            titoloEl.appendChild(pref)
+
             document.getElementById("rating").innerHTML = "rating: " + data.rating + " stelle"    
-                    
+
             let costo, diff
             if(data.statistica[1] == 1)
                 costo = "basso"

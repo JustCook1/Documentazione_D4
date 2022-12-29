@@ -163,9 +163,6 @@ function cercaRicette(){
             "&autore=" + data[k].autore +"&account=" + document.getElementById("nomeUtente").value
             
             let ris = document.createElement("div")
-            ris.onclick = function(){
-
-            }
             ris.innerHTML = data[k].nome + "\ndi " + data[k].autore
 
             //converti statistiche
