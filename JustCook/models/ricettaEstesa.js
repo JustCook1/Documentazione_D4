@@ -8,7 +8,7 @@ const RicettaEstesaSchema = new mongoose.Schema({
     descrizione : String,
     passaggi : [{type: String}],
     ingredienti: [{type: mongoose.Schema.Types.ObjectId, ref: Ingrediente}],
-    quantità: [{type: Number}]
+    quantita: [{type: Number}]
 
 });
 

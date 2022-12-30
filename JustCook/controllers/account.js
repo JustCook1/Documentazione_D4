@@ -1,9 +1,8 @@
 const Account = require('../models/account');
 const Ricetta = require('../models/ricetta');
+const RicettaEstesa = require('../models/ricettaEstesa');
+const Dispensa = require('../models/dispensa');
 const mongoose = require('mongoose');
-//const express = require ('express'); segna come on utilizata
-//const { notify } = require('../routes/account'); segna come non utilizzata/da warning come proprietà non esistente
-//const multer = require('multer');
 
 
 const aggiungiAiPreferiti = (req, res) => {
@@ -74,47 +73,108 @@ const completaRicetta = (req, res) => {
     let nomeAccount = req.body.account;
 
     //controlla che la ricetta esista
-    Ricetta.findOne({nome: nomeRicetta, autore: autoreRicetta}, {"_id": true} 
-    , (error, data) => {
-
+    RicettaEstesa.aggregate([
+        { $lookup: {from: "ricettas", localField: "ricetta", foreignField: "_id", as: "ricettaInfo"}},
+        { $project: {nome: "$ricettaInfo.nome", autore: "$ricettaInfo.autore", ingredienti: "$ingredienti", quantita: "$quantita", 
+            "_id": { $first: "$ricettaInfo._id"} }},
+        { $match: {nome: nomeRicetta,autore: autoreRicetta} }
+    ], (error, dataRicetta) => {
         if(error){
             console.log(error)
             return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})                
         }else{
-            if(data == null)
-                return  res.status(404).json({error: "Errore: ricetta da aggiungere non presente nel database"})
+            if(dataRicetta.length == 0)
+                return  res.status(404).json({error: "Errore: ricetta da completare non presente nel database"})
             else{
                 //la ricetta è presente nel db
-                let id_ricetta = mongoose.Types.ObjectId(data._id)
+                dataRicetta = dataRicetta[0]
+                let id_ricetta = mongoose.Types.ObjectId(dataRicetta._id)
 
                 //controlla se nell'account è già presente la ricetta da completare
-                Account.findOne({username: nomeAccount,  "primiCompletamenti":  id_ricetta}
-                , (error, data) => {
+                Account.aggregate([
+                    { $match: {username: nomeAccount}},
+                    { $lookup: {from: "dispensas", localField: "_id", foreignField: "account", as: "dispensaInfo"}}, //join con dispensa
+                    { $project: {ingredientiDispensa: {$first:"$dispensaInfo.ingredienti"}, quantitaDispensa: {$first:"$dispensaInfo.quantita"}, id_account: "$_id",
+                        completata: {$in: [id_ricetta, "$primiCompletamenti"] }  }}
+                ]
+                , (error, dataDisp) => {
+                    //ritorna qualcosa solo se in primiCompletamenti non c'è la ricetta cercata
 
                     if(error){
                         console.log(error)
                         return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})                
                     }else{
-                        if(data == null){
-                            // non è mai stata completata
-                            //ricerca l'id della ricetta
-                            Account.updateOne( { "username": nomeAccount},
-                                { $push: {"primiCompletamenti": id_ricetta } }
+                        dataDisp = dataDisp[0]
 
-                            , (error) => {
+                        //togli gli ingredienti::
+                        //1.controlla che nella dispensa dell'account ci siano ingredienti a sufficienza
+                        //1.1 bisogna prima cercare se esiste nella dispensa ogni ingrediente della ricetta
+                        //1.2 bisogna controllare se la quantità è sufficiente
+                        let ingredientiSufficienti = true
+                        let nuoveQuantita = dataDisp.quantitaDispensa
+                        let nuoviIngredienti = dataDisp.ingredientiDispensa // se si raggiunge lo 0 si rimuove l'ingrediente
+                        console.log(dataRicetta.ingredienti)
+
+                        for(let k = 0; ingredientiSufficienti && k < dataRicetta.ingredienti.length; k++){
+                            let continua = true
+                            let j = 0
+                            for(j = 0; continua && j < dataDisp.ingredientiDispensa.length; j++){
+                                if(""+dataDisp.ingredientiDispensa[j] == ""+dataRicetta.ingredienti[k])
+                                    continua = false
+                            }
+                            j--
+                            
+                            if(continua){
+                                //ingrediente non è dispensa
+                                ingredientiSufficienti = false
+                            }else{
+                                //controlla la quantità
+                                if(dataDisp.quantitaDispensa[j] < dataRicetta.quantita[k])
+                                    ingredientiSufficienti = false;
+                                else{
+                                    //aggiorna le quantità
+                                    nuoveQuantita[j] = dataDisp.quantitaDispensa[j] - dataRicetta.quantita[k]
+                                    if(nuoveQuantita[j] == 0){
+                                        nuoveQuantita.splice(j, 1)
+                                        nuoviIngredienti.splice(j, 1)
+                                    }
+                                }
+                            }
+                        }
+
+                        if(ingredientiSufficienti){
+                            //update alla dispensa
+                            Dispensa.updateOne( { "account": dataDisp.id_account},
+                                { $set: {"ingredienti":  nuoviIngredienti,"quantita": nuoveQuantita} }
+                            , (error, data) => {
                                 if(error){
                                     console.log(error)
-                                    return res.status(500).json({error: "Errore: qualcosa è andato storto nela fase di completamento della ricetta"})
+                                    return res.status(500).json({error: "Errore: qualcosa è andato storto nell'update della dispensa"})
                                 }else{
-                                    console.log(res)
-                                    return res.status(200).json({message: "Ok: ricetta completata"})
+                                    if(dataDisp.completata)
+                                        return res.json({message: "OK: ricetta completata di nuovo"})
+                                    else{
+                                        //update all'account
+                                        Account.updateOne( { "username": nomeAccount},
+                                            { $push: {"primiCompletamenti": id_ricetta }}
+
+                                        , (error) => {
+                                            if(error){
+                                                console.log(error)
+                                                return res.status(500).json({error: "Errore: qualcosa è andato storto nella fase di completamento della ricetta"})
+                                            }else{
+                                                return res.status(200).json({messaggio: "Ok: ricetta completata per per la prima volta"})
+                                            }
+                                        });
+                                    }
                                 }
-                                
-                            }
-                            );
-                        }else{
-                            return res.json({error: "Errore: la ricetta è già stata completata"});
-                        }
+
+                            });                          
+
+                        }else
+                            return res.json({error: "Errore: non hai gli ingredienti sufficienti per completare la ricetta"});
+
+                        
                     }
                 });
             }
