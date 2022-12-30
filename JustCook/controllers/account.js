@@ -3,7 +3,7 @@ const Ricetta = require('../models/ricetta');
 const mongoose = require('mongoose');
 //const express = require ('express'); segna come on utilizata
 //const { notify } = require('../routes/account'); segna come non utilizzata/da warning come proprietà non esistente
-const multer = require('multer');
+//const multer = require('multer');
 
 
 const aggiungiAiPreferiti = (req, res) => {
@@ -220,6 +220,41 @@ const aggiungiRating = (req, res) => {
     }
 };
 
+const ritornaRatingDatoRicetta = (req, res) => {
+    let nomeRicetta = req.query.ricetta;
+    let autoreRicetta = req.query.autore;
+    let nomeAccount = req.query.account;
+
+    Ricetta.findOne({nome: nomeRicetta, autore: autoreRicetta}
+        , (error, data) => {
+            if(error){
+                return res.status(200).json(1)
+            }else{
+                let id_ricetta = mongoose.Types.ObjectId(data._id)
+                Account.findOne({username: nomeAccount, "ratingDati.ricetta": id_ricetta}
+                ,(error, data) =>{
+                    if(error || data == null)
+                        return res.status(200).json(-1)
+                    else{
+                        let ratingRis, continua = true
+                        let i
+                        for(i = 0; i < data.ratingDati.length && continua; i++){
+                            if(""+data.ratingDati[i].ricetta == ""+id_ricetta){
+                                continua = false
+                                ratingRis = data.ratingDati[i].ratingDato
+                            }
+                        }
+
+                        return res.status(200).json(ratingRis)
+                    }
+                }
+                );
+            }
+        }
+
+    );
+};
+
 //GET indirizzo email per cambio password
 const getMail = (req, res) => {
     let mail = req.params.indirizzoEmail;
@@ -261,6 +296,7 @@ module.exports = {
     completaRicetta,
     togliDaiPreferiti,
     aggiungiRating,
+    ritornaRatingDatoRicetta,
     getMail,
     patchPassword
 };

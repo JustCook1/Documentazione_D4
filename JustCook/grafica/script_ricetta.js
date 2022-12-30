@@ -119,15 +119,105 @@ function riempiCampi() {
             pref.id = "pref"
             titoloEl.appendChild(pref)
 
-            //rating
+            //rating::
+            //prendi il rating della ricetta globale
+            let ratingGlobale = data.rating
 
-            for(let i = 0; i < 5; i++){
-                let img = document.createElement("IMG")
-                console.log(url.split("ricetta")[0] + "img/star_yellow_transp.png")
-                img.src = "file:///home/ghost/Documenti/uni/PROJECT/Documentazione_D4/JustCook/grafica/img/star_yellow_transp.png"
-                img.alt= "star "
-                document.getElementById("rating").appendChild(img)
-            }  
+            if(accountAtt != "undefined"){
+                //scopri se c'è un rating precedentemente dato
+                let link = "http://localhost:8080/infoRatingDati/params?ricetta=" + ricettaAtt + "&autore=" + autoreAtt +"&account=" + accountAtt
+                
+                fetch(link, {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let srcImg, limite;
+                    if(data == -1){
+                        srcImg = "img/star_yellow.png"
+                        limite = ratingGlobale
+                    }else{
+                        srcImg = "img/star_orange.png"
+                        limite = data
+                    }
+
+                    for(let i = 0; i < 5; i++){
+                        let img = document.createElement("IMG")
+                        if(limite > i)
+                            img.src = srcImg
+                        else
+                            img.src = "img/star_yellow%20_transp.png"
+        
+                        img.width = "20"
+                        img.alt= "star "
+                        img.onclick = function(event){
+                            let ratingCont = document.getElementById("rating")
+                            let ratingCliccato = -1
+                            do{
+                                ratingCliccato++;
+                            }while(ratingCont.childNodes[ratingCliccato] != event.target);
+                            
+                            ratingCliccato++;
+
+                            //invia rating
+                            let link = "http://localhost:8080/aggiungiRating"
+                                
+                            fetch(link, {
+                                method: 'PATCH',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({
+                                    ricetta: ricettaAtt,
+                                    autore: autoreAtt,
+                                    account: accountAtt,
+                                    rating: ratingCliccato
+                                }
+                                )
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(data.error) throw new Error(data.error);
+                                alert("Ok: nuovo rating aggiunto");
+                                let i = -1
+                                do{
+                                    i++;
+                                    ratingCont.childNodes[i].src = "img/star_orange.png"
+
+                                }while(ratingCont.childNodes[i] != event.target);
+                                i++;
+                                while(i < ratingCont.childNodes.length){
+                                    ratingCont.childNodes[i].src = "img/star_yellow%20_transp.png"
+                                    i++;
+                                }
+                                
+                            })
+                            .catch((error) => {
+                                let string = "" + error
+                                alert(string.split("Error:")[1]);
+                            }
+                            );
+                        }
+                        document.getElementById("rating").appendChild(img)
+                    }
+                    
+                });
+                
+            }else{
+                //non si può cambiare rating
+                for(let i = 0; i < 5; i++){
+                    let img = document.createElement("IMG")
+                    //rating Globale
+                    if(ratingGlobale > i)
+                        img.src = "img/star_yellow.png"
+                    else
+                        img.src = "img/star_yellow%20_transp.png"
+    
+                    img.width = "20"
+                    img.alt= "star "
+                    document.getElementById("rating").appendChild(img)
+
+                }
+            }
 
             let costo, diff
             if(data.statistica[1] == 1)
