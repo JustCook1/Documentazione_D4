@@ -240,7 +240,7 @@ function riempiCampi() {
             let listaIng = document.getElementById('ingredienti')
             for(let i = 0; i < data.ingredienti.length; i++){
                 let li = document.createElement("li")
-                li.innerHTML = data.ingredienti[i].nome + ": " + data.quantità[i] + data.ingredienti[i].tipo
+                li.innerHTML = data.ingredienti[i].nome + ": " + data.quantita[i] + data.ingredienti[i].tipo
                 listaIng.appendChild(li)
             }
 

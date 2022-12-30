@@ -86,7 +86,7 @@ const trovaInfoRicette = (req, res, next) => {
             { $lookup: {from: "ricettas", localField: "ricetta", foreignField: "_id", as: "ricettaInfo"}},
             { $project: {nome: {$first: "$ricettaInfo.nome"}, autore: {$first: "$ricettaInfo.autore"}, statistica: {$first: "$ricettaInfo.statistica"}, 
             filtri: {$first: "$ricettaInfo.filtri"}, passaggi: "$passaggi", descrizione: "$descrizione", rating:{$first: "$ricettaInfo.rating"},
-            ingredienti: "$ingredientiInfo", quantità: "$quantità" }},
+            ingredienti: "$ingredientiInfo", quantita: "$quantita" }},
             { $match: { nome:nomeR, autore: autoreR }}
         ]
 

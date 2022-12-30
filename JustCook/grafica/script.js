@@ -32,9 +32,8 @@ function cercaIngrediente() {
         console.log(data);
         //tutta questa parte andrà messa in una funzione che aggiunge un ingrediente alla dispensa
         let li = document .createElement('li');
-        let name = document.createElement ('span');
-        name.innerHTML =  data.nome;
-        li.appendChild(name);
+        li.innerHTML =  data.nome;
+        //li.appendChild(name);
         lista.appendChild(li);
         listaIngredienti.appendChild(lista);
     })
@@ -86,11 +85,11 @@ function seleziona(id){
 //ricerca ricetta
 function cercaRicette(){
     //funzione di ricerca
-    let risultati = document.getElementById("risultati")
+    let risultatiCont = document.getElementById("risultati")
 
     //svuota campo risultati
-    while(risultati.children.length!= 0){
-        risultati.removeChild(risultati.lastChild)
+    while(risultatiCont.children.length!= 0){
+        risultatiCont.removeChild(risultatiCont.lastChild)
     }
 
     //estrai i vari campi
@@ -136,6 +135,8 @@ function cercaRicette(){
     }
 
     let link = "http://localhost:8080/cercaRicette/cerca?";
+    console.log(ingredienti)
+
     if(ingredienti != "ingredienti="){
         link = link.concat(ingredienti)
     
@@ -145,6 +146,7 @@ function cercaRicette(){
         if(nomeRicetta != "nome=")
             link = link.concat("&"+nomeRicetta)
     }
+    console.log(link)
 
     //filtri da aggiungere a html
     let richiesta = new XMLHttpRequest();
@@ -156,7 +158,9 @@ function cercaRicette(){
     function reqListener() {
         let data = JSON.parse(this.responseText);
 
-        //converti i dati ricevuti in risultati
+        //converti i dati ricevuti in risultatià
+        let arrayRisultati = [];
+
         for(let k = 0; k < data.length; k++){
             let link_ris = document.createElement("a")
             link_ris.href = "#"
@@ -183,11 +187,11 @@ function cercaRicette(){
                 costo == "alto"
 
             if(data[k].statistica[2] == 1)
-                difficoltà = "basso"
+                difficoltà = "bassa"
             else if(data[k].statistica[2] == 2)
-                difficoltà == "medio"
+                difficoltà == "media"
             else
-                difficoltà == "alto"
+                difficoltà == "alta"
 
             stats.innerHTML =  tempo + " " + costo + " " + difficoltà
 
@@ -195,8 +199,23 @@ function cercaRicette(){
             ris.appendChild(stats)
 
             link_ris.appendChild(ris)
-            risultati.appendChild(link_ris)
+            //aggiungi link_ris a un array e poi li ordini
+            arrayRisultati.push(link_ris)
         }
+
+        //ordina i risultati
+        //1. prendi il filtro d'ordine
+        if(document.getElementById("tempo").checked)
+            arrayRisultati.sort(ordinaTempo)
+        else if(document.getElementById("costo").checked)
+            arrayRisultati.sort(ordinaCosto)
+        else if(document.getElementById("rating").checked)
+            arrayRisultati.sort(ordinaRating)
+        else
+            arrayRisultati.sort(ordinaDiff)
+
+        for(let i = 0; i < arrayRisultati.length; i++)
+            risultatiCont.appendChild(arrayRisultati[i])
     }
     
     function reqError(err) {
@@ -204,4 +223,47 @@ function cercaRicette(){
     }
 };
 
+const ordinaTempo = function oTemp(tempo1, tempo2) {
+    // link: {inner + rating - stats}
+    let val1, val2
+    let stringaval1 = (tempo1.firstChild).lastChild.innerHTML
+    val1 = stringaval1.split(" min")[0]
+    let stringaval2 = (tempo2.firstChild).lastChild.innerHTML
+    val2 = stringaval2.split(" min")[0]
 
+    return val1 -val2;
+    
+}
+const ordinaCosto = function oCosto(a, b) {
+    // link: {inner + rating - stats}
+    let val1, val2
+    let stringaval1 = (a.firstChild).lastChild.innerHTML
+    val1 = stringaval1.split(" ")[2]
+    let stringaval2 = (b.firstChild).lastChild.innerHTML
+    val2 = stringaval2.split(" ")[2]
+
+    return val1 -val2;
+    
+}
+const ordinaDiff = function oDiff(a, b) {
+    // link: {inner + rating - stats}
+    let val1, val2
+    let stringaval1 = (a.firstChild).lastChild.innerHTML
+    val1 = stringaval1.split(" ")[3]
+    let stringaval2 = (b.firstChild).lastChild.innerHTML
+    val2 = stringaval2.split(" ")[3]
+
+    return val1 -val2;
+    
+}
+const ordinaRating = function oRat(a, b) {
+    // link: {inner + rating - stats}
+    let val1, val2
+    let stringaval1 = (tempo1.firstChild).firstChild.innerHTML
+    val1 = stringaval1.split(" stelle")[0]
+    let stringaval2 = (tempo2.firstChild).firstChild.innerHTML
+    val2 = stringaval2.split(" stelle")[0]
+
+    return val1 -val2;
+    
+}
