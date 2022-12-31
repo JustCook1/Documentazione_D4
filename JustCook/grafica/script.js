@@ -386,32 +386,66 @@ function cercaRicette(){
             let ris = document.createElement("div")
             ris.innerHTML = data[k].nome + "\ndi " + data[k].autore
 
+            //stile
+            ris.appendChild(document.createElement("br"))
+            ris.style.border = "1px solid rgba(0, 0, 0, 0.2)";
+            ris.style.padding = "5px"
+            ris.style.margin = "5px"
+            ris.style.width = "50%"
+            ris.style.borderRadius = "10px"
+            ris.style.fontFamily = 'Architects Daughter'
+            ris.style.color = "#FF7E36"
+            ris.style.fontSize = "25px"
+
             //converti statistiche
-            let rating = document.createElement("div")
-            rating.innerHTML = data[k].rating + "stelle"
-            let stats = document.createElement("div")
-            let tempo = data[k].statistica[0] + " min", costo, difficoltà
+            let rating = document.createElement("span")
+            // carica stelle
+            for(let i = 0; i < data[k].rating; i++){
+                let img = document.createElement("img")
+                img.src = "img/star_yellow.png";
+                img.width = "20";
+                rating.appendChild(img)
+
+            }
+            let tempo = document.createElement("div"), costo = document.createElement("div"), difficoltà = document.createElement("div")
+            tempo.innerHTML = "tempo: " + data[k].statistica[0] + " min", costo, difficoltà
 
             if(data[k].statistica[1] == 1)
-                costo = "basso"
+                costo.innerHTML = "costo: basso"
             else if(data[k].statistica[1] == 2)
-                costo == "medio"
+                costo.innerHTML = "costo: medio"
             else
-                costo == "alto"
+                costo.innerHTML = "costo: alto"
 
             if(data[k].statistica[2] == 1)
-                difficoltà = "bassa"
+                difficoltà.innerHTML = "difficoltà: bassa"
             else if(data[k].statistica[2] == 2)
-                difficoltà == "media"
+                difficoltà.innerHTML = "difficoltà: media"
             else
-                difficoltà == "alta"
+                difficoltà.innerHTML = "difficolta: alta"
 
-            stats.innerHTML =  tempo + " " + costo + " " + difficoltà
+            
+            tempo.style.fontFamily = 'Patrick Hand'
+            tempo.style.color = "black"
+            tempo.style.fontSize = "20px"
+            costo.style.fontFamily = 'Patrick Hand'
+            costo.style.color = "black"
+            costo.style.fontSize = "20px"
+            difficoltà.style.fontFamily = 'Patrick Hand'
+            difficoltà.style.color = "black"
+            difficoltà.style.fontSize = "20px"
 
             ris.appendChild(rating)
-            ris.appendChild(stats)
+            ris.appendChild(tempo)
+            ris.appendChild(costo)
+            ris.appendChild(difficoltà)
 
             link_ris.appendChild(ris)
+
+            //stile risultati
+            link_ris.style.color = "black";
+            link_ris.style.textDecoration = "none"
+
             //aggiungi link_ris a un array e poi li ordini
             arrayRisultati.push(link_ris)
         }
@@ -427,8 +461,16 @@ function cercaRicette(){
         else
             arrayRisultati.sort(ordinaDiff)
 
-        for(let i = 0; i < arrayRisultati.length; i++)
-            risultatiCont.appendChild(arrayRisultati[i])
+
+        if(document.getElementById('asc').innerHTML == "ascendente"){
+            for(let i = 0; i < arrayRisultati.length; i++)
+                risultatiCont.appendChild(arrayRisultati[i])
+
+        }else{
+            for(let i = arrayRisultati.length -1; i >= 0; i--)
+                risultatiCont.appendChild(arrayRisultati[i])
+
+        }
     }
     
     function reqError(err) {
@@ -472,11 +514,21 @@ const ordinaDiff = function oDiff(a, b) {
 const ordinaRating = function oRat(a, b) {
     // link: {inner + rating - stats}
     let val1, val2
-    let stringaval1 = (tempo1.firstChild).firstChild.innerHTML
+    let stringaval1 = (a.firstChild).firstChild.innerHTML
     val1 = stringaval1.split(" stelle")[0]
-    let stringaval2 = (tempo2.firstChild).firstChild.innerHTML
+    let stringaval2 = (b.firstChild).firstChild.innerHTML
     val2 = stringaval2.split(" stelle")[0]
 
     return val1 -val2;
+    
+}
+
+function ascendente(event) {
+    let btn = document.getElementById('asc')
+    if(btn.innerHTML == "ascendente"){
+        btn.innerHTML = "discendente"
+
+    }else{
+        btn.innerHTML = "ascendente"}
     
 }
