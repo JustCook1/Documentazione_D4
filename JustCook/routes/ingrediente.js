@@ -16,5 +16,6 @@ router.post('/ricetta', ricettaController.<nome funzione>);
 router.post('/ingrediente',upload.none(), ingredienteController.postNuovoIngrediente);
 router.get('/ingrediente/:nome', ingredienteController.cercaIngrediente);
 router.delete('/ingrediente/:nome', ingredienteController.eliminaIngrediente);
+router.get('/ingrediente/id/:id', ingredienteController.cercaIngredienteId);
 
 module.exports = router; // export to use in server.js

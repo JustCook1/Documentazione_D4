@@ -14,12 +14,17 @@
     <span id="dispensa">
         <h2>La tua dispensa</h2>
         <p>Aggiungi ingredienti alla tua dispensa</p>
-        <input type="text" id="inputDispensa">
-        <input type="number" id="quantita" name="quantita" min="0">
-        <button id="Ingredienti_btn" onclick = "return cercaIngrediente()" >Aggiungi</button>
+        <input type="text" id="inputDispensa" placeholder="Inserisci un ingrediente">
+        <input type="number" id="quantita" name="quantita" min="0" style="width: 10%;">
+        <button id="Ingredienti_btn" onclick = "return aggiungiIngrediente()" >Aggiungi</button>
         <h3>I tuoi ingredienti</h3>
         <ul id="listaIngredienti">
         </ul>
+        <ul id="listaQuantita">
+        </ul>
+        <h3 id="cancella">Rimuovi un ingrediente dalla dispensa</h3>
+        <input type="text" id="inputCancella" placeholder="Inserisci un ingrediente">
+        <button id="Cancella_btn" onclick = "return cancellaIngrediente()">Rimuovi</button>
     </span>
 
     <span id="login">
@@ -30,8 +35,8 @@
         <button id="Accedi_btn" onclick = "return login()">Accedi</button>
     </span>
     <span id="utente" style="display: none;">
-        <h2>Benvenuto</h2>
-        <p id="nomeUtente"></p>
+        <p  style="display: inline;">Benvenuto </p>
+        <p id="nomeUtente" style="display: inline;"></p>
     </span>
     
     <span id="ricerca">

@@ -1,68 +1,57 @@
 
-let account
-//1: controlla se l'utente è loggato
-//2: se l'utente è loggato controlla se ha una dispensa
-//3: se l'utente ha una dispensa carica gli ingredienti
-//4: se l'utente non ha una dispensa crea una nuova dispensa e carica gli ingredienti
-//5: se l'utente non è loggato mostra un messaggio di errore
-function aggiungiAllaDispensa() {
 
-    //alcune cose da tenere a mente
-    const nome = document.getElementById("inputDispensa").value;
-    const quantita = document.getElementById("quantita").value;
-    //se il tipo di ingrediente è grammi o ml aggiungere il tipo e chiamare la funzione aggiungiIngredienteDispensa
-    //per aggiornare la dispensa
-    //nella lista andrebbe anche aggiunta una box per modificare la quantità
-}
+//TODO a getDispensa e aggiungiIngrediente si può aggiungere i tasti per modificare e eliminare gli ingredienti 
+//andrebbe aggiunto il tasto nelle liste
 
-//cerca in database un ingrediente per nome e lo aggiunge alla lista ingredienti dispensa
-function cercaIngrediente() {
-    const listaIngredienti = document.getElementById("listaIngredienti");
-    const lista = document.createDocumentFragment();
-    var nome = document.getElementById("inputDispensa").value;
-    var url = "http://localhost:8080/ingrediente/" + nome;
-    fetch(url, {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-        //body: JSON.stringify({nome : nome})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.error) throw new Error(data.error);
-        console.log(data);
-        //tutta questa parte andrà messa in una funzione che aggiunge un ingrediente alla dispensa
-        let li = document .createElement('li');
-        li.innerHTML =  data.nome;
-        //li.appendChild(name);
-        lista.appendChild(li);
-        listaIngredienti.appendChild(lista);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert("Ingrediente non trovato");
-    }
-    );
 
+//funzione che cerca un ingrediente nel database e ne l'id come stringa
+function cercaIngrediente(nome) {
+    return new Promise((resolve, reject) => {
+        var url = "http://localhost:8080/ingrediente/" + nome;
+        fetch(url, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) throw new Error(data.error);
+            console.log(data);
+            resolve(data._id);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert("Ingrediente non trovato");
+            reject(error);
+        }
+        );
+    });
 }
 
 //login
-function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const url = "http://localhost:8080/controllers/authentications";
+async function login() {
+    let nomeUtente = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if(username == null || username == "" || password == null || password == ""){
+        alert("Inserisci email e password");
+        return;
+    }
+    
+    console.log("nomeUtente: " + nomeUtente);
+    const url = "http://localhost:8080/login";
     fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username : username, password : password})
+        body: JSON.stringify({username : nomeUtente, password : password})
     })
     .then(response => response.json())
     .then(data => {
         if(data.error || data.success == false) throw new Error(data.error);
         console.log(data);
         document.getElementById("login").style.display = "none";
-        document.getElementById("nomeUtente").innerHTML = username;
-        account = username
+        document.getElementById("nomeUtente").innerHTML = nomeUtente;
         document.getElementById("utente").style.display = "block";
+        getDispensa(nomeUtente);
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -70,6 +59,236 @@ function login() {
     }
     );
 }
+
+//crea una nuova dispensa per l'utente
+//ritorna true se la dispensa è stata creata, false se esiste già
+async function nuovaDispensa(username) {
+    
+    const url = "http://localhost:8080/dispensa";
+    fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({nome : username})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error) throw new Error(data.error);
+        
+        console.log(data);
+        return true;
+        
+    })
+    .catch((error) => {
+        return false;
+    }
+    );
+}
+
+//aggiunge un ingrediente alla dispensa
+async function aggiungiIngrediente() {
+    let username = document.getElementById("nomeUtente").textContent;
+    console.log("username: " + username);
+    const ingrediente = document.getElementById("inputDispensa").value;
+    const quantita = document.getElementById("quantita").value;
+
+    if(ingrediente == null || ingrediente == ""){
+        alert("Inserisci un ingrediente");
+        return;
+    }
+    
+    //console.log("l'attuale quantità è: " + quantita);
+
+    console.log("sono in aggiungiIngrediente con account " + username);
+
+    //aspetto di ricevere l'id dell'ingrediente
+    let ingredienteId;
+    await cercaIngrediente(ingrediente).then(id => {
+        ingredienteId = id;
+        console.log(ingredienteId);
+    });
+
+    //controllo che l'utente non inserisca una quantità non valida
+    if(quantita == null || quantita <= 0){
+        alert("Inserisci una quantità valida");
+        return;
+    }
+
+    //controllo che l'utente abbia una dispensa
+    nuovaDispensa(username);
+
+    
+
+    //console.log("qui sta l'id dell'ingrediente prima di entrae nel fetch: " + ingredienteId);
+    const url = "http://localhost:8080/dispensa/aggiungiIngrediente/";
+    fetch(url, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({nome : username, idIngrediente : ingredienteId, quantita : quantita})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error) throw new Error(data.error);
+        else{
+            console.log(data);
+            //cerco l'indice dell'ingrediente in data.ingredienti
+            //questo indice mi serve per aggiornare la quantità dell'ingrediente nella lista html
+            let index = -1;
+            for(let i = 0; i < data.ingredienti.length; i++){
+                if(data.ingredienti[i] == ingredienteId){
+                    index = i;
+                    break;
+                }
+            }
+
+            //controllo se l'ingrediente è già presente nella lista
+            const listItems = document.querySelectorAll('#listaIngredienti li');
+            let presente = false;
+            for (let i = 0; i < listItems.length; i++) {
+                if(listItems[i].textContent.includes(ingrediente)) presente = true;
+            }
+            //aggiungo l'ingrediente alla lista html se non è già presente
+            if(!presente){
+                const listaIngredienti = document.getElementById("listaIngredienti");
+                const lista = document.createDocumentFragment();
+                let li = document .createElement('li');
+                let name = document.createElement ('span');
+                name.innerHTML =  ingrediente;
+                li.appendChild(name);
+                lista.appendChild(li);
+                listaIngredienti.appendChild(lista);
+
+                //aggiungo la quantità alla lista html listaQuantita
+                const listaQuantita = document.getElementById("listaQuantita");
+                const listaQ = document.createDocumentFragment();
+                let liQ = document .createElement('li');
+                let Q = document.createElement ('span');
+                Q.innerHTML =  data.quantita[index];
+                liQ.appendChild(Q);
+                listaQ.appendChild(liQ);
+                listaQuantita.appendChild(listaQ);
+                
+            }
+            else{
+                //aggiorno la quantità dell'ingrediente nella lista html listaQuantita
+                const listItems = document.querySelectorAll('#listaQuantita li');
+                const listItems2 = document.querySelectorAll('#listaIngredienti li');
+                for (let i = 0; i < listItems.length; i++) {
+                    if(listItems2[i].textContent.includes(ingrediente)) listItems[i].textContent = data.quantita[index];
+                }
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        return false;
+    }
+    );
+}
+
+//get dispensa e la stampa nella lista
+function getDispensa(username) {
+
+    console.log("entro in getDispensa");
+    console.log("username: " + username);
+    
+    //controllo che l'utente abbia una dispensa e se non ce l'ha la creo
+    console.log(nuovaDispensa(username));
+
+    const url = "http://localhost:8080/dispensa/" + username;
+    fetch (url, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error) throw new Error(data.error);
+        console.log(data);
+        const vettoreQuantita = data.quantita;
+        const listaIngredienti = document.getElementById("listaIngredienti");
+        const lista = document.createDocumentFragment();
+        const listaQuantita = document.getElementById("listaQuantita");
+        const listaQ = document.createDocumentFragment();
+        for(let i = 0; i < data.ingredienti.length; i++){
+            
+            //GET INGREDIENTE per id per prendere il nome
+            const url = "http://localhost:8080/ingrediente/id/" + data.ingredienti[i];
+            fetch(url, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) throw new Error(data.error);
+           
+                let li = document .createElement('li');
+                let name = document.createElement ('span');
+                name.innerHTML =  data.nome;
+                li.appendChild(name);
+                lista.appendChild(li);
+                listaIngredienti.appendChild(lista);
+
+                let liQ = document .createElement('li');
+                let Q = document.createElement ('span');
+                Q.innerHTML =  vettoreQuantita[i];
+                liQ.appendChild(Q);
+                listaQ.appendChild(liQ);
+                listaQuantita.appendChild(listaQ);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return false;
+            }
+            );
+
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        return false;
+    }
+    );
+}
+
+//cancella un ingrediente dalla dispensa
+async function cancellaIngrediente() {
+    let username = document.getElementById("nomeUtente").textContent;
+    let ingrediente = document.getElementById("inputCancella").value;
+
+    //usa cercaIngrediente(nome) per trovare l'id dell'ingrediente
+    let ingredienteId;
+    await cercaIngrediente(ingrediente).then(id => {
+        ingredienteId = id;
+        console.log(ingredienteId);
+    });
+
+    const url = "http://localhost:8080/dispensa/eliminaIngrediente/";
+    fetch(url, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({nome : username, idIngrediente : ingredienteId})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.error) throw new Error(data.error);
+        console.log(data);
+        //cancello l'ingrediente dalla lista html
+        const listItems = document.querySelectorAll('#listaIngredienti li');
+        const listItems2 = document.querySelectorAll('#listaQuantita li');
+        for (let i = 0; i < listItems.length; i++) {
+            if(listItems[i].textContent.includes(ingrediente)){
+                listItems[i].remove();
+                listItems2[i].remove();
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        return false;
+    }
+    );
+}
+
+//--------------^GB-------------vDC--------------------------------------------
 
 
 //funzioni per la selezione dei filtri

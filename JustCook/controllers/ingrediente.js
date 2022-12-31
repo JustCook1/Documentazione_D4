@@ -25,6 +25,16 @@ const cercaIngrediente = (req, res) => {
     });
 };
 
+//cerca ingrediente per id
+const cercaIngredienteId = (req, res) => {
+    let idIngrediente = req.params.id;
+    Ingrediente.findOne({_id: idIngrediente}, (err, Ingrediente) => {
+        if (!Ingrediente || err) return res.json({error: "Ingrediente non trovato", code: 404});
+        res.json(Ingrediente);
+    });
+};
+
+
 //elimina ingrediente
 //solo per testing su postman
 const eliminaIngrediente = (req, res) => {
@@ -42,5 +52,6 @@ const eliminaIngrediente = (req, res) => {
 module.exports = {
     postNuovoIngrediente,
     cercaIngrediente,
-    eliminaIngrediente
+    eliminaIngrediente,
+    cercaIngredienteId
 };

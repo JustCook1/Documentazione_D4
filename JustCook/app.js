@@ -13,6 +13,7 @@ const routesRicetta = require('./routes/ricetta');
 const routesRicettaEstesa = require('./routes/ricettaEstesa');
 const routesIngrediente = require('./routes/ingrediente');
 const routesDispensa = require('./routes/dispensa');
+const routesAuth = require('./routes/authentication');
 
 //swagger
 const swaggerUi = require('swagger-ui-express');
@@ -24,8 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', authentication);
 
+app.use('/', routesAuth);
 app.use('/', routesAccount); 
 app.use('/', routesRicetta); 
 app.use('/', routesRicettaEstesa); 
