@@ -1,54 +1,249 @@
 body{
-    background-color: #FF8C00;
     width : 100%;
+    font-family: 'Patrick Hand';
+    font-size: 22px;
+}
+
+#popUpBar{
+    background-color: #FFD770;
+    position : absolute;
+    left:0%;
+    top: 0%;
+    width: 100%;
+    height: 7%;
+}
+
+#fridge{
+    position:relative;
+    left:1.3%;
+    top:8%;
+} 
+
+#scrittaBarra{
+    position:relative;
+    left: 1.6%;
+    bottom: 18%;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+#navBar{
+    background-color: #FF7E36;
+    position : absolute;
+    left:0%;
+    top: 7%;
+    width: 100%;
+    height: 30%
 }
 
 #titolo{
-    position : absolute;
+    position : center;
     text-align: center;
-    font-size: 40pt;
+    font-size: 100pt;
+    font-family:'Architects Daughter';
     color : white;
-    top: 25%;
+    top: 2%;
     width: 100%;
     margin: auto;
+    text-shadow: 2px 2px 4px #000000;
 }
 
 #login{
     position: absolute;
-    right: 2%;
+    width: 40%;
+    height: 100%;
+    right: 0%;
     top: 0%;
     text-align: center;
 }
 
-#ricerca{
-    position:absolute;
-    bottom: 20%;
-    width: 100%;
-    margin: auto; 
-    text-align: center;
+#login > h2{
+    position: absolute;
+    bottom: 0%;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+    font-size: 20pt;   
 }
 
+#username{
+    position:absolute;
+    left:10%;
+    top:25%;
+
+}
+
+#password{
+    position:absolute;
+    left:38%;
+    top:25%;
+
+}
+
+#login > a{
+    position:absolute;
+    left:67%;
+    top:20%;
+    font-size: 20px;
+
+}
+
+#login > button{
+    position:absolute;
+    left:85%;
+    top:25%;
+    font-size: 16px;
+
+}
+
+#utente > p{
+    position: fixed;
+    top: 2.3%;
+    right: 9.2%;
+    font-size: 20px; 
+    font-family: 'Architects Daughter';
+    color: #333;
+    margin:auto;
+}
+
+#utente > h2{
+    position: fixed;
+    bottom: 92.5%;
+    right: 1.2%;
+    font-size: 22px;
+    font-family: 'Architects Daughter';
+    color: #333;
+}
+
+#ricerca{
+    position:absolute;
+    top: 40%;
+    left: 30%;
+    width: 40%;
+    margin: auto; 
+}
+
+#ricerca_input{
+    position:relative;
+    right:1%;
+    width:85%;
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    border-radius: 10px;
+    margin:10px;
+}
+
+#ricerca_btn{
+    position:relative;
+    right: 2%;
+    bottom:0%;
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+}
+
+#filtri{
+    margin: 6px;
+}
+
+#filtri > div{
+    margin:6px;
+}
+
+#filtri > div > button{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+}
+
+#asc{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+}
+
+
 #dispensa{
-    background-color: #90EE90;
+    background-color: rgba(80, 189, 121, 0.8);
     position: absolute;
     padding: 10px;
-    height: 80%;
+    height: 100%;
     left: 0%;
-    top: 15%;
+    top: 7%;
     text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#dispensa > h2{
+    position:relative;
+    left:2%;
+    top:1%;
+    margin:auto;
+    font-size: 40pt;
+    font-family:'Architects Daughter';
+    text-shadow: 2px 2px 4px #000000;
+    color : white;
+
+}
+
+#dispensa > span{
+    position:relative;
+    left:2%;
+    top:1%;
+
+}
+
+#inputDispensa{
+    width: 60%;
+}
+
+
+#inputCancella{
+    width: 60%;
+}
+
+
+#quantita{
+    width: 15%;
+}
+
+#liste{
+    white-space: nowrap;
+
+}
+
+#listaQuantita{
+    list-style-type: none;
+    display: inline-block;
+}
+#listaIngredienti{
+    display: inline-block;
+}
+
+#dispensa > span > button{
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    margin: auto;
+    position:relative;
+    top:0.30%;
+
+}
+
+#dispensa > span > input{
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    height: 3%;
+    border-radius: 10px;
+
 }
 
 #utente{
     position: absolute;
-    font-size: 20pt;
-    color : white;
-    right: 2%;
-    top: 2%;
+    width: fit-content;
+    right: 1%;
+    top: 0%;
+    text-align: center;
 }
-
-ul {
-    display: inline-block;
-  }
 
 #sliderAttrezzatura{
     width: 40px;

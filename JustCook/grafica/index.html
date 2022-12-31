@@ -4,45 +4,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Patrick Hand' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Architects%20Daughter' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
     <title>Document</title>
 </head>
 <body>
-    <h1 id="titolo">JUSTCOOK</h1>
+    <span id="popUpBar">
+        <img id= "fridge" src="img/fridge.png" width="50px">
+        <span id = "scrittaBarra">cucina con gli ingredienti che hai in casa!</span>
+
+        <span id="login">
+            <h2>login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <a href="cambiaPassword.html">cambia password</a>
+            <button id="Accedi_btn" onclick = "return login()">accedi</button>
+        </span>
+        <span id="utente" style="display: none;">
+            <p>benvenuto</p>
+            <h2 id="nomeUtente"></h2>
+        </span>
+
+    </span>
+    <div id = "navBar"><h1 id="titolo">JustCooK</h1></div>
     
     <span id="dispensa">
         <h2>La tua dispensa</h2>
-        <p>Aggiungi ingredienti alla tua dispensa</p>
-        <input type="text" id="inputDispensa" placeholder="Inserisci un ingrediente">
-        <input type="number" id="quantita" name="quantita" min="0" style="width: 10%;">
-        <button id="Ingredienti_btn" onclick = "return aggiungiIngrediente()" >Aggiungi</button>
-        <h3>I tuoi ingredienti</h3>
-        <ul id="listaIngredienti">
-        </ul>
-        <ul id="listaQuantita">
-        </ul>
-        <h3 id="cancella">Rimuovi un ingrediente dalla dispensa</h3>
-        <input type="text" id="inputCancella" placeholder="Inserisci un ingrediente">
-        <button id="Cancella_btn" onclick = "return cancellaIngrediente()">Rimuovi</button>
+        <span>
+            <p>Aggiungi ingredienti alla tua dispensa</p>
+            <input type="text" id="inputDispensa" placeholder="Inserisci un ingrediente">
+            <input type="number" id="quantita" name="quantita" min="0" style="width: 10%;">
+            <button id="Ingredienti_btn" onclick = "return aggiungiIngrediente()" >Aggiungi</button>
+            <h3>I tuoi ingredienti</h3>
+            <span id = "liste">
+                <ul id="listaIngredienti">
+                </ul>
+                <ul id="listaQuantita">
+                </ul>
+            </span>
+            <h3 id="cancella">Rimuovi un ingrediente dalla dispensa</h3>
+            <input type="text" id="inputCancella" placeholder="Inserisci un ingrediente">
+            <button id="Cancella_btn" onclick = "return cancellaIngrediente()">Rimuovi</button>
+        </span>
     </span>
 
-    <span id="login">
-        <h2>Accedi</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password"><br>
-        <a href="cambiaPassword.html">cambia password</a>
-        <button id="Accedi_btn" onclick = "return login()">Accedi</button>
-    </span>
-    <span id="utente" style="display: none;">
-        <p  style="display: inline;">Benvenuto </p>
-        <p id="nomeUtente" style="display: inline;"></p>
-    </span>
     
-    <span id="ricerca">
-        <h2>Ricerca</h2>
-        <input type="text" id="ricerca_input" placeholder="Cerca una ricetta per nome"><br>
-        <button id="ricerca_btn" onclick="cercaRicette()">Cerca una ricetta</button>
+    <div id="ricerca">
+        <input type="text" id="ricerca_input" placeholder="Cerca una ricetta per nome">
+        <button id="ricerca_btn" onclick="cercaRicette()">Cerca</button>
         <div id ="filtri"> 
             <div>Dieta: <button id= "vegana" onclick="seleziona('vegana')">vegana</button> <button id= "veget" onclick="seleziona('veget')">vegetariana</button> </div>
             <div>Senza: <button id= "latte" onclick="seleziona('latte')">latte</button> <button id= "uova" onclick="seleziona('uova')">uova</button> 
@@ -57,10 +68,10 @@
             </div>
         </div>
         <span><input type="range" min="0" max="1" value="0" class="slider" id="sliderAttrezzatura"> Attrezzatura speciale </span>
-        <span><button id= "asc" onclick="seleziona('asc')">ascendente</button></span>
+        <span><button id= "asc" onclick="ascendente()">ascendente</button></span>
         
         <div id="risultati"></div>
-    </span>
+    </div>
 
 </body>
 </html>

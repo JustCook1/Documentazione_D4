@@ -37,7 +37,6 @@ async function login() {
         return;
     }
     
-    console.log("nomeUtente: " + nomeUtente);
     const url = "http://localhost:8080/login";
     fetch(url, {
         method: 'POST',
@@ -149,13 +148,9 @@ async function aggiungiIngrediente() {
             //aggiungo l'ingrediente alla lista html se non è già presente
             if(!presente){
                 const listaIngredienti = document.getElementById("listaIngredienti");
-                const lista = document.createDocumentFragment();
                 let li = document .createElement('li');
-                let name = document.createElement ('span');
-                name.innerHTML =  ingrediente;
-                li.appendChild(name);
-                lista.appendChild(li);
-                listaIngredienti.appendChild(lista);
+                li.innerHTML =  ingrediente;
+                listaIngredienti.appendChild(li);
 
                 //aggiungo la quantità alla lista html listaQuantita
                 const listaQuantita = document.getElementById("listaQuantita");
@@ -163,6 +158,7 @@ async function aggiungiIngrediente() {
                 let liQ = document .createElement('li');
                 let Q = document.createElement ('span');
                 Q.innerHTML =  data.quantita[index];
+                console.log(ingrediente)
                 liQ.appendChild(Q);
                 listaQ.appendChild(liQ);
                 listaQuantita.appendChild(listaQ);
@@ -205,7 +201,6 @@ function getDispensa(username) {
         console.log(data);
         const vettoreQuantita = data.quantita;
         const listaIngredienti = document.getElementById("listaIngredienti");
-        const lista = document.createDocumentFragment();
         const listaQuantita = document.getElementById("listaQuantita");
         const listaQ = document.createDocumentFragment();
         for(let i = 0; i < data.ingredienti.length; i++){
@@ -221,11 +216,8 @@ function getDispensa(username) {
                 if(data.error) throw new Error(data.error);
            
                 let li = document .createElement('li');
-                let name = document.createElement ('span');
-                name.innerHTML =  data.nome;
-                li.appendChild(name);
-                lista.appendChild(li);
-                listaIngredienti.appendChild(lista);
+                li.innerHTML =  data.nome;
+                listaIngredienti.appendChild(li);
 
                 let liQ = document .createElement('li');
                 let Q = document.createElement ('span');
