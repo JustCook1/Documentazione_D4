@@ -1,4 +1,4 @@
-
+let account //per query pagina Ricetta
 
 //TODO a getDispensa e aggiungiIngrediente si può aggiungere i tasti per modificare e eliminare gli ingredienti 
 //andrebbe aggiunto il tasto nelle liste
@@ -49,6 +49,7 @@ async function login() {
         console.log(data);
         document.getElementById("login").style.display = "none";
         document.getElementById("nomeUtente").innerHTML = nomeUtente;
+        account = nomeUtente // per sapere chi è loggato
         document.getElementById("utente").style.display = "block";
         getDispensa(nomeUtente);
     })
