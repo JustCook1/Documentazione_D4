@@ -185,6 +185,81 @@
                     }
                 }
             }
+        },
+        "/dispensa/:aggiungiIngrediente":{
+            "patch":{
+                "tags":["Dispensa"],
+                "summary": "Aggiunge alla dispensa l'ingrediente e la quantità specificati dall'utente",
+                "parameters":[
+                    {"in":"body", "name":"nome", "description": "username account collegato alla dispensa", "type":"string"},
+                    {"in":"body", "name":"idIngrediente", "description":"id ingrediente da aggiungere alla dispensa", 
+                    "static":"SpringDocUtils.getConfig().replaceWithSchema(ObjectId.class, new StringSchema()"},
+                    {"in":"body", "name":"quantita", "description":"quandita dell'ingrediente da aggiungere alla dispensa", "type":"number"}
+                ],
+                "responses":{
+                    "404":{
+                        "description":"Errore: account o dispensa non trovati"
+                    },
+                    "500":{
+                        "description":"Errore: errore nell'aggiunta dell'ingrediente nella dispensa"
+                    },
+                    "200":{
+                        "description":"Ok: ingrediente aggiunto",
+                        "schema":{
+                            "$ref":"#/definitions/Dispense"
+                        }
+                    }
+                }
+
+            }
+        },
+        "/dispensa/eliminaIngrediente":{
+            "delete":{
+                "tags":["Dispensa"],
+                "summary": "Elimina l'ingrediente specificato dall'utente dalla dispensa",
+                "parameters":[
+                    {"in":"body", "name": "idIngrediente", "description":"id ingrediente da eliminare dalla dispensa", 
+                    "static":"SpringDocUtils.getConfig().replaceWithSchema(ObjectId.class, new StringSchema()"},
+                    {"in":"body", "name":"nome", "description":"username account collegato alla dispensa", "type":"string"}
+                ],
+                "responses":{
+                    "404":{
+                        "description":"Errore: account o dispensa non trovati"
+                    },
+                    "500":{
+                        "description":"Errore: errore nell'eliminazione dell'ingrediente"
+                    },
+                    "200":{
+                        "description":"Ok: ingrediente eliminato dalla dispensa",
+                        "schema":{
+                            "$ref":"#/definitions/Dispense"
+                        }
+                    }
+                }
+            }
+        },
+        "/login":{
+            "post":{
+                "tags":["Authentication"],
+                "summary": "Fornisce l'accesso agli account degli utenti",
+                "parameters":[
+                    {"in":"body", "name":"username", "description":"username inserito dall'utente", "type":"string"},
+                    {"in":"body", "name":"password", "description":"password inserita dall'utente", "type":"string"}
+                ],
+                "responses":{
+                    "404":{
+                        "description":"Errore: account non trovato in base alle credenziali inserite"
+                    },
+                    "200":{
+                        "description":"Ok: accesso effettuato",
+                        "schema":{
+                            "$ref":"#/definitions/Account"
+                     }
+
+                 }
+
+                }
+            }
         }
     },
 
@@ -222,6 +297,26 @@
                     "ratingDato": {"type": "integer" }
                 }}}
 
+            }
+        },
+        "Dispense":{
+            "require":[
+                "account"
+            ],
+            "properties":{
+                "ingredienti":{"type": "array", "items":{"$ref":"#/definitions/Ingredienti"}},
+                "quantita":{"type":"array", "items":{"type":"number"}},
+                "account":{"$ref":"#/definitions/Account"}
+            }
+        },
+        "Ingredienti":{
+            "required":[
+                "nome",
+                "tipo"
+            ],
+            "properties":{
+                "nome": {"type": "string"},
+                "tipo": {"type": "string"}
             }
         }
 
