@@ -1,0 +1,42 @@
+body{
+    width : 100%;
+    font-family: 'Patrick Hand';
+    font-size: 22px;
+    
+}
+
+button{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    text-align: center;
+    line-height: 17px;
+}
+
+input{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+#login{
+    position: relative;
+    left: 35%;
+    top: 50%;
+    width: fit-content;
+    height: fit-content;
+    display: block;
+}
+
+h2{
+    font-size: 40pt;
+    font-family: 'Architects Daughter';
+    color: #FF7E36;
+    text-shadow: 2px 2px 4px #000000;
+    text-align: center;
+
+}

@@ -98,8 +98,18 @@ function riempiCampi() {
             data = data[0]
             ricettaAtt = data.nome, autoreAtt = data.autore
 
+            let listaFiltri = document.getElementById('filtri')
+
+            for(let i = 0; i < data.filtri.length; i++){
+                let span = document.createElement("span")
+                span.innerHTML = data.filtri[i]
+                listaFiltri.appendChild(span)
+            }
+
             let titoloEl = document.getElementById('titolo')
-            titoloEl.innerHTML = decodeURI(data.nome) + " di " + data.autore;
+            let autoreEl = document.getElementById('autore')
+            titoloEl.innerHTML = decodeURI(data.nome);
+            autoreEl.innerHTML =  "di " + data.autore;
 
             //bottone completa
             let completa = document.createElement("button")
@@ -234,7 +244,20 @@ function riempiCampi() {
             else
                 diff = "alta"
 
-            document.getElementById('stats').innerHTML =  "tempo: " + data.statistica[0] + " min" + " costo: " + costo + " difficoltà: " + diff
+            let tempoCont = document.createElement("span");
+            let costoCont = document.createElement("span");
+            let diffCont = document.createElement("span");
+
+            tempoCont.innerHTML = "tempo: " + data.statistica[0] + " min"
+            costoCont.innerHTML = " costo: " + costo 
+            diffCont.innerHTML =  " difficoltà: " + diff
+
+            document.getElementById('stats').appendChild(tempoCont)
+            document.getElementById('stats').appendChild(document.createElement("br"))
+            document.getElementById('stats').appendChild(costoCont)
+            document.getElementById('stats').appendChild(document.createElement("br"))
+            document.getElementById('stats').appendChild(diffCont)
+
             document.getElementById('desc').innerHTML = data.descrizione
 
             let listaIng = document.getElementById('ingredienti')
@@ -246,9 +269,9 @@ function riempiCampi() {
 
             let listaPass = document.getElementById('passaggi')
             for(let i = 0; i < data.passaggi.length; i++){
-                let div = document.createElement("div")
-                div.innerHTML = (i +1) + ". " + data.passaggi[i]
-                listaPass.appendChild(div)
+                let li = document.createElement("li")
+                li.innerHTML =  data.passaggi[i]
+                listaPass.appendChild(li)
             }
 
             

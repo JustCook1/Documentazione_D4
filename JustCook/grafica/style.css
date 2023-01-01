@@ -91,7 +91,6 @@ body{
     position:absolute;
     left:85%;
     top:25%;
-    font-size: 16px;
 
 }
 
@@ -137,9 +136,6 @@ body{
     position:relative;
     right: 2%;
     bottom:0%;
-    height:30px;
-    font-family: 'Patrick Hand';
-    font-size: 20px;
 }
 
 #filtri{
@@ -150,10 +146,15 @@ body{
     margin:6px;
 }
 
-#filtri > div > button{
+button{
     height:30px;
     font-family: 'Patrick Hand';
     font-size: 20px;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    text-align: center;
+    line-height: 17px;
 }
 
 #asc{
@@ -221,9 +222,6 @@ body{
 }
 
 #dispensa > span > button{
-    font-family: 'Patrick Hand';
-    font-size: 20px;
-    margin: auto;
     position:relative;
     top:0.30%;
 

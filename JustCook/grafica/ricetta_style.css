@@ -2,4 +2,107 @@ body{
     width : 100%;
     font-family: 'Patrick Hand';
     font-size: 22px;
+    padding-left:10px;
+}
+
+button{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    text-align: center;
+    line-height: 17px;
+    margin: 2px;
+}
+
+#titolo{
+    font-size: 50pt;
+    font-family:'Architects Daughter';
+    color : #FF7E36;
+    margin:0px;
+    text-shadow: 2px 2px 4px #000000;
+    width: fit-content;
+    display: inline-block;
+    height:52pt;
+}
+
+#autore{
+    margin:0px;
+    font-size: 25pt;
+    font-family:'Architects Daughter';
+    padding-left: 2px;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+h2{
+    
+    font-family:'Architects Daughter';
+    color : #FF7E36;
+    text-shadow: 1px 1px 2px #000000;
+    margin: auto;
+}
+
+#passaggi{
+    list-style-type: decimal;
+}
+
+li{
+    margin: 10px;
+}
+
+ul{
+    padding: 30px;
+    margin: auto;
+}
+
+#ingredienti{
+    background-color: rgba(255, 215, 112, 0.7);
+    width: fit-content;
+    margin-left: 0px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 4px #000000;
+}
+
+#completa{
+    margin-left: 50px;
+}
+
+#desc{
+    padding:30px;
+}
+
+#stats{
+    padding-left:30px;
+    padding-bottom:10px;
+}
+
+#rating{
+    padding-left: 30px;
+}
+
+#filtri{
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+
+#filtri > span{
+    height:30px;
+    font-family: 'Patrick Hand';
+    font-size: 20px;
+    background-color: rgb(80, 189, 121);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    text-align: center;
+    line-height: 17px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 7px;
 }

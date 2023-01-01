@@ -289,10 +289,10 @@ async function cancellaIngrediente() {
 //funzioni per la selezione dei filtri
 function seleziona(id){
     let bottone = document.getElementById(id)
-    if(bottone.style.backgroundColor == "green")
-        bottone.style.backgroundColor = "white"
+    if(bottone.style.backgroundColor == "rgb(80, 189, 121)")
+        bottone.style.backgroundColor = "#e5e5e5"
     else
-        bottone.style.backgroundColor = "green"
+        bottone.style.backgroundColor = "rgb(80, 189, 121)"
 
 }
 
