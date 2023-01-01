@@ -147,7 +147,7 @@
             "get": {
                 "tags": ["Account"],
                 "summary": "Preleva l'indirizzo email per il cambio password del login e verifica se è associato ad un account",
-                "parameters": [{"in": "body", "name": "indirizzoEmail", "description":"indirizzoEmail per cambio password","type": "string"}],
+                "parameters": [{"in": "params", "name": "indirizzoEmail", "description":"indirizzoEmail per cambio password","type": "string"}],
                 "responses":{
                     "404":{
                         "description":"Errore: email non inserita"
@@ -169,8 +169,8 @@
                 "tags": ["Account"],
                 "summary": "Preleva indirizzo email e nuova password per il cambio password del login",
                 "parameters":[
-                    {"in":"body", "name": "indirizzoEmail", "description": "indirizzoEmail per cambio password", "type": "string"},
-                    {"in":"body", "name": "password", "description": "nuova password per cambio password", "type":"string"}
+                    {"in":"params", "name": "indirizzoEmail", "description": "indirizzoEmail per cambio password", "type": "string"},
+                    {"in":"params", "name": "password", "description": "nuova password per cambio password", "type":"string"}
                 ],
                 "responses":{
                     "404":{
@@ -258,6 +258,26 @@
 
                  }
 
+                }
+            }
+        },
+        "/ingrediente/:nome":{
+            "get":{
+                "tags":["Ingredienti"],
+                "summary": "Cerca l'ingrediente inserito nella barra di ricerca della dispensa e verifica che esista nel database",
+                "parameters":[
+                    {"in":"path", "name":"nome","description":"nome ingrediente da cercare", "type":"string"}
+                ],
+                "responses":{
+                    "404":{
+                        "description": "Errore: ingrediente non trovato"
+                    },
+                    "200":{
+                        "description":"Ok: ingrediente trovato",
+                        "schema":{
+                            "$ref":"#/definitions/Ingredienti"
+                        }
+                    }
                 }
             }
         }
