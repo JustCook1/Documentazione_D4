@@ -52,9 +52,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: node-app
-        path: .
-Dependencies lock file is not found in /home/runner/work/Documentazione_D4/Documentazione_D4. Supported file patterns: package-lock.json,npm-shrinkwrap.json,yarn.lock
-/JustCook
+        path: ./JustCook
 
   deploy:
     permissions:
