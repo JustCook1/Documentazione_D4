@@ -1,7 +1,7 @@
 let accountAtt, ricettaAtt, autoreAtt
 
 const comp = function completa(){    
-    let link = "http://localhost:8080/completaRicetta"
+    let link = "https://justcook.herokuapp.com/completaRicetta"
     fetch(link, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
@@ -29,7 +29,7 @@ const gestisciPreferiti = function preferiti(){
     let bottone = document.getElementById("pref")
 
     if(bottone.innerHTML == "aggiungi ai preferiti"){
-        let link = "http://localhost:8080/aggiungiAiPreferiti"
+        let link = "https://justcook.herokuapp.com/aggiungiAiPreferiti"
         fetch(link, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
@@ -53,7 +53,7 @@ const gestisciPreferiti = function preferiti(){
         
         bottone.innerHTML = "togli dai preferiti"
     }else{
-        let link = "http://localhost:8080/togliDaiPreferiti"
+        let link = "https://justcook.herokuapp.com/togliDaiPreferiti"
             
         fetch(link, {
             method: 'PATCH',
@@ -90,7 +90,7 @@ function riempiCampi() {
         //parametri si trovano nella forma: nome=Tirmisù, passaggi = 
         let richiesta = new XMLHttpRequest();
         richiesta.onload = reqListener;
-        richiesta.open('get', "http://localhost:8080/trovaRicetta/params?" + params, true);
+        richiesta.open('get', "https://justcook.herokuapp.com/trovaRicetta/params?" + params, true);
         richiesta.send();
 
         function reqListener() {
@@ -135,7 +135,7 @@ function riempiCampi() {
 
             if(accountAtt != "undefined"){
                 //scopri se c'è un rating precedentemente dato
-                let link = "http://localhost:8080/infoRatingDati/params?ricetta=" + ricettaAtt + "&autore=" + autoreAtt +"&account=" + accountAtt
+                let link = "https://justcook.herokuapp.com/infoRatingDati/params?ricetta=" + ricettaAtt + "&autore=" + autoreAtt +"&account=" + accountAtt
                 
                 fetch(link, {
                     method: 'GET',
@@ -171,7 +171,7 @@ function riempiCampi() {
                             ratingCliccato++;
 
                             //invia rating
-                            let link = "http://localhost:8080/aggiungiRating"
+                            let link = "https://justcook.herokuapp.com/aggiungiRating"
                                 
                             fetch(link, {
                                 method: 'PATCH',
