@@ -3,8 +3,6 @@ const express = require('express');
 const app = express();
 //cors per non avere porblemi con le richieste
 const cors = require('cors');
-const authentication = require('./controllers/authentication');
-const tokenChecker = require('./controllers/tokenChecker');
 
 //routes generiche
 
