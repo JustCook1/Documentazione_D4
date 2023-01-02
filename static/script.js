@@ -7,7 +7,7 @@ let account //per query pagina Ricetta
 //funzione che cerca un ingrediente nel database e ne l'id come stringa
 function cercaIngrediente(nome) {
     return new Promise((resolve, reject) => {
-        var url = "http://localhost:8080/ingrediente/" + nome;
+        var url = "https://justcook.herokuapp.com/ingrediente/" + nome;
         fetch(url, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
