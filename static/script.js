@@ -320,17 +320,15 @@ function cercaRicette(){
     }
 
     //prendi i filtri
-    let filtri = "filtri=";
     let refFiltri =  Array.prototype.slice.call(document.getElementById("filtri").children)
 
     for(let i = 0; i < refFiltri.length; i++){
         let sottoFiltri =  Array.prototype.slice.call(refFiltri[i].children)
 
         for(let j = 0; j < sottoFiltri.length; j++){
-            if(sottoFiltri[j].style.backgroundColor == "green"){ // se il bottone è selezionato
+            if(sottoFiltri[j].style.backgroundColor == "rgb(80, 189, 121)"){ // se il bottone è selezionato
                 //controlla se appendere 'senza'
                 id = sottoFiltri[j].innerHTML
-                console.log(id)
                 if(id == "uova" || id == "latte" || id == "glutine" || id == "frutta secca")
                     id = ("senza " + id)
                 
@@ -353,7 +351,7 @@ function cercaRicette(){
 
     if(ingredienti != "ingredienti="){
         link = link.concat(ingredienti)
-        console.log("filtri")
+        console.log(filtri)
     
         if(filtri != "filtri=")
             link = link.concat("&"+filtri)
