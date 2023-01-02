@@ -28,6 +28,7 @@ const cercaIngrediente = (req, res) => {
 //cerca ingrediente per id
 const cercaIngredienteId = (req, res) => {
     let idIngrediente = req.params.id;
+    console.log(idIngrediente)
     Ingrediente.findOne({_id: idIngrediente}, (err, Ingrediente) => {
         if (!Ingrediente || err) return res.json({error: "Ingrediente non trovato", code: 404});
         res.json(Ingrediente);
