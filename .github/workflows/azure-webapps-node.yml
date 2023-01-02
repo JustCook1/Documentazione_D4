@@ -24,7 +24,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: JustCook    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: './JustCook'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'                # set this to the node version to use
 
 permissions:
@@ -52,7 +52,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: node-app
-        path: /JustCook
+        path: .
+Dependencies lock file is not found in /home/runner/work/Documentazione_D4/Documentazione_D4. Supported file patterns: package-lock.json,npm-shrinkwrap.json,yarn.lock
+/JustCook
 
   deploy:
     permissions:
