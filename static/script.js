@@ -307,6 +307,7 @@ function cercaRicette(){
 
     //estrai i vari campi
     let nomeRicetta = "nome=" + document.getElementById("ricerca_input").value
+    let filtri = "filtri="
     let ingredientiLista= Array.prototype.slice.call(document.getElementById("listaIngredienti").children)
     let ingredienti = "ingredienti=";
     
