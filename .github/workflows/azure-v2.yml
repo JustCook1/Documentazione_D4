@@ -42,9 +42,8 @@ jobs:
         node-version: '19.x'
 
     - name: npm install, build, and test
-      run: |
-        npm install
-        npm test
+    - run: npm install
+    - run: npm test
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
