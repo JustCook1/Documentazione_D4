@@ -37,7 +37,7 @@ async function login() {
         return;
     }
     
-    const url = "https://localhost:8080/login";
+    const url = "http://localhost:8080/login";
     fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
