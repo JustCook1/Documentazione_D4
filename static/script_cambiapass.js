@@ -3,7 +3,7 @@ function cambiaPassword() {
     let email = document.getElementById("mail").value;
     let nuovaPassword = document.getElementById("nuovaPassword").value;
 
-    const url = "https://justcook.herokuapp.com/account/"+email+"/"+nuovaPassword;
+    const url = "https://justcook.herokuapp.com/account/params?indirizzoEmail="+email+"&password="+nuovaPassword;
     fetch(url, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},

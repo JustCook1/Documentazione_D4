@@ -331,8 +331,8 @@ const getMail = (req, res) => {
 
 const patchPassword = (req, res) => {
 
-    let mail = req.params.indirizzoEmail;
-    let password = req.params.password;
+    let mail = req.query.indirizzoEmail;
+    let password = req.query.password;
 
     if(!password) return res.json({error: "Password nuova non inserita", code: 404});
 

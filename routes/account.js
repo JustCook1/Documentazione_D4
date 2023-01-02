@@ -8,6 +8,6 @@ router.patch('/aggiungiRating', accountController.aggiungiRating);
 router.get('/infoRatingDati/:param', accountController.ritornaRatingDatoRicetta);
 router.patch('/completaRicetta', accountController.completaRicetta);
 router.get('/account/:indirizzoEmail', accountController.getMail);
-router.patch('/account/:indirizzoEmail/:password', accountController.patchPassword);
+router.patch('/account/:params', accountController.patchPassword);
 
 module.exports = router;

@@ -43,7 +43,7 @@ describe('Test per le api di account', () => {
 
     //test per patchPassword
     test('Test per patchPassword', async () => {
-        const res = await request(app).patch('/account/sos@mail.cccccccccccccc/NuovaPassword123!');
+        const res = await request(app).patch('/account/params?indirizzoEmail=sos@mail.cccccccccccccc&password=NuovaPassword123!');
         expect(res.statusCode).toEqual(200);
     });
 
