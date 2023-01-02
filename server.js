@@ -1,4 +1,5 @@
 const app = require('./app');
+const express = require('express');
 
 const mongoose = require('mongoose');
 mongoose.set("strictQuery", false); // per togliere il warning DEPRECATED
@@ -15,3 +16,9 @@ mongoose.connect(
 const listener = app.listen(process.env.PORT || 8080, () => {
     console.log('Your app is listening on port ' + listener.address().port)
 })
+
+app.use(express.static('static'));
+
+app.get("/", (req, res) => {
+    res.sendFile("static/index.html");
+  });
