@@ -206,7 +206,7 @@ function getDispensa(username) {
         for(let i = 0; i < data.ingredienti.length; i++){
             
             //GET INGREDIENTE per id per prendere il nome
-            const url = "https://justcook.herokuapp.com/id/" + data.ingredienti[i];
+            const url = "https://justcook.herokuapp.com/ingrediente/id/" + data.ingredienti[i];
             fetch(url, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
