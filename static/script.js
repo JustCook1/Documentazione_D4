@@ -330,6 +330,7 @@ function cercaRicette(){
             if(sottoFiltri[j].style.backgroundColor == "green"){ // se il bottone è selezionato
                 //controlla se appendere 'senza'
                 id = sottoFiltri[j].innerHTML
+                console.log(id)
                 if(id == "uova" || id == "latte" || id == "glutine" || id == "frutta secca")
                     id = ("senza " + id)
                 
@@ -352,9 +353,12 @@ function cercaRicette(){
 
     if(ingredienti != "ingredienti="){
         link = link.concat(ingredienti)
+        console.log("filtri")
     
         if(filtri != "filtri=")
             link = link.concat("&"+filtri)
+
+        console.log(nomeRicetta)
 
         if(nomeRicetta != "nome=")
             link = link.concat("&"+nomeRicetta)
