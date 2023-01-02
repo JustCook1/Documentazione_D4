@@ -190,6 +190,7 @@ function getDispensa(username) {
     console.log(nuovaDispensa(username));
 
     const url = "https://justcook.herokuapp.com/dispensa/" + username;
+    console.log(username)
     fetch (url, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}

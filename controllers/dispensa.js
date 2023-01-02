@@ -28,9 +28,12 @@ const nuovaDispensa = (req, res) => {
 
 //get dispensa per l'utente avente nome = nomeAccount
 const getDispensa = (req, res) => {
+    console.log('Dispensa')
+    console.log(req.params.nome)
     let nomeAccount = req.params.nome;
     Account.findOne({username: nomeAccount}, (err, account) => {
         if (!account || err) return res.json({error: "Account non trovato", code: 404});
+        console.log(account)
         Dispensa.findOne({account: mongoose.Types.ObjectId(account._id)}, (err, dispensa) => {
             if (!dispensa || err) return res.json({error: "Dispensa non trovata", code: 404});
             res.json(dispensa);
