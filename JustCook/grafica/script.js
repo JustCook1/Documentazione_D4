@@ -116,8 +116,6 @@ async function aggiungiIngrediente() {
     //controllo che l'utente abbia una dispensa
     nuovaDispensa(username);
 
-    
-
     //console.log("qui sta l'id dell'ingrediente prima di entrae nel fetch: " + ingredienteId);
     const url = "http://localhost:8080/dispensa/aggiungiIngrediente/";
     fetch(url, {
