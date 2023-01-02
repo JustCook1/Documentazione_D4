@@ -9,12 +9,11 @@ env:
 
 jobs:
   build:
-    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
     - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
     - name: npm install, build, and test
