@@ -64,7 +64,7 @@ async function login() {
 //ritorna true se la dispensa è stata creata, false se esiste già
 async function nuovaDispensa(username) {
     
-    const url = "http://localhost:8080/dispensa";
+    const url = "https://justcook.herokuapp.com/dispensa";
     fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -117,7 +117,7 @@ async function aggiungiIngrediente() {
     nuovaDispensa(username);
 
     //console.log("qui sta l'id dell'ingrediente prima di entrae nel fetch: " + ingredienteId);
-    const url = "http://localhost:8080/dispensa/aggiungiIngrediente/";
+    const url = "https://justcook.herokuapp.com/dispensa/aggiungiIngrediente/";
     fetch(url, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
@@ -189,7 +189,7 @@ function getDispensa(username) {
     //controllo che l'utente abbia una dispensa e se non ce l'ha la creo
     console.log(nuovaDispensa(username));
 
-    const url = "http://localhost:8080/dispensa/" + username;
+    const url = "https://justcook.herokuapp.com/dispensa/" + username;
     fetch (url, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
@@ -205,7 +205,7 @@ function getDispensa(username) {
         for(let i = 0; i < data.ingredienti.length; i++){
             
             //GET INGREDIENTE per id per prendere il nome
-            const url = "http://localhost:8080/ingrediente/id/" + data.ingredienti[i];
+            const url = "https://justcook.herokuapp.com/id/" + data.ingredienti[i];
             fetch(url, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
@@ -252,7 +252,7 @@ async function cancellaIngrediente() {
         console.log(ingredienteId);
     });
 
-    const url = "http://localhost:8080/dispensa/eliminaIngrediente/";
+    const url = "https://justcook.herokuapp.com/dispensa/eliminaIngrediente/";
     fetch(url, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
@@ -346,7 +346,7 @@ function cercaRicette(){
         filtri = filtri.concat(",attrezatura speciale")
     }
 
-    let link = "http://localhost:8080/cercaRicette/cerca?";
+    let link = "https://justcook.herokuapp.com/cercaRicette/cerca?";
     console.log(ingredienti)
 
     if(ingredienti != "ingredienti="){
